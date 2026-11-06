@@ -1,0 +1,18 @@
+Options -Indexes
+
+<IfModule mod_authz_core.c>
+    <FilesMatch "(?i)^(\.env(?:\..*)?|composer\.(?:json|lock)|artisan|auth\.json)$">
+        Require all denied
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Route public uploads through Laravel's public storage link.
+    RewriteRule ^storage/(.*)$ public/storage/$1 [L,NC]
+
+    # Serve only Laravel's public directory from the hosting document root.
+    RewriteCond %{REQUEST_URI} !^/public(?:/|$) [NC]
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

@@ -1,0 +1,18 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-H2hTMUU5.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/storefront.css": {
+    "file": "assets/storefront-DkwxjitX.css",
+    "src": "resources/css/storefront.css",
+    "isEntry": true
+  },
+  "resources/js/storefront.js": {
+    "file": "assets/storefront-BsZlczu5.js",
+    "name": "storefront",
+    "src": "resources/js/storefront.js",
+    "isEntry": true
+  }
+}
