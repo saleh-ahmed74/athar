@@ -1,0 +1,307 @@
+{
+  "Thoughtful things for everyday living": "تفاصيل جميلة لحياة يومية أهدأ",
+  "Main navigation": "القائمة الرئيسية",
+  "Home": "الرئيسية",
+  "Shop": "المتجر",
+  "Our story": "قصتنا",
+  "Contact": "تواصل معنا",
+  "My account": "حسابي",
+  "Sign in": "تسجيل الدخول",
+  "You can place an order without creating an account.": "تقدر تكمل طلبك من غير ما تعمل حساب.",
+  "Continue as a guest": "إكمال الطلب كضيف",
+  "Cart": "السلة",
+  "Made for a home that feels like yours.": "اختيارات تجعل البيت أقرب إليك.",
+  "Explore": "استكشف",
+  "Shop all": "كل المنتجات",
+  "Help": "المساعدة",
+  "Contact us": "تواصل معنا",
+  "Terms and policies": "الشروط والسياسات",
+  "Store administration": "إدارة المتجر",
+  "View store": "عرض المتجر",
+  "Overview": "نظرة عامة",
+  "Products": "المنتجات",
+  "Categories": "الفئات",
+  "Orders": "الطلبات",
+  "Messages": "الرسائل",
+  "Sign out": "تسجيل الخروج",
+  "Special price": "سعر مميز",
+  "EGP": "جنيه",
+  "Discover the little things that make a home feel special.": "اكتشف التفاصيل الصغيرة التي تجعل البيت مميزًا.",
+  "Thoughtful pieces for your home and kitchen.": "قطع مختارة لبيتك ومطبخك.",
+  "Shop the collection": "تسوق المجموعة",
+  "Browse by category": "تسوق حسب الفئة",
+  "Featured pieces": "اختياراتنا",
+  "View all": "عرض الكل",
+  "Add to cart": "أضف إلى السلة",
+  "Out of stock": "نفد من المخزون",
+  "Your cart is empty.": "سلتك فارغة.",
+  "Continue shopping": "تابع التسوق",
+  "Proceed to checkout": "تابع إلى إتمام الطلب",
+  "Subtotal": "المجموع الفرعي",
+  "Shipping": "الشحن",
+  "Total": "الإجمالي",
+  "Checkout": "إتمام الطلب",
+  "Place order": "تأكيد الطلب",
+  "Cash on delivery": "الدفع عند الاستلام",
+  "Name": "الاسم",
+  "Email": "البريد الإلكتروني",
+  "Phone": "رقم الهاتف",
+  "City": "المحافظة / المدينة",
+  "Address": "العنوان بالتفصيل",
+  "Notes": "ملاحظات للطلب",
+  "Order placed": "تم استلام طلبك",
+  "Order number": "رقم الطلب",
+  "Search products": "ابحث عن منتج",
+  "Sort by": "ترتيب حسب",
+  "Newest": "الأحدث",
+  "Price: low to high": "السعر: من الأقل للأعلى",
+  "Price: high to low": "السعر: من الأعلى للأقل",
+  "All products": "كل المنتجات",
+  "Send message": "إرسال الرسالة",
+  "Subject": "الموضوع",
+  "Message": "الرسالة",
+  "Save": "حفظ",
+  "Cancel": "إلغاء",
+  "Edit": "تعديل",
+  "Delete": "حذف",
+  "Add product": "إضافة منتج",
+  "Add category": "إضافة فئة",
+  "Status": "الحالة",
+  "Pending": "قيد المراجعة",
+  "Confirmed": "تم التأكيد",
+  "Processing": "قيد التجهيز",
+  "Shipped": "تم الشحن",
+  "Delivered": "تم التسليم",
+  "Cancelled": "ملغي",
+  "No products found.": "لا توجد منتجات.",
+  "Thank you. Your order is being prepared.": "شكرًا لك. يجري تجهيز طلبك.",
+  "You need an account to see your orders.": "سجل الدخول لعرض طلباتك.",
+  "All customer-facing store content is managed here and saved to the database.": "كل محتوى المتجر الظاهر للعملاء يُدار من هنا ويُحفظ في قاعدة البيانات.",
+  "Brand and contact": "العلامة التجارية والتواصل",
+  "Store name": "اسم المتجر",
+  "Logo image URL": "رابط صورة الشعار",
+  "Currency symbol": "رمز العملة",
+  "Instagram URL": "رابط إنستغرام",
+  "Facebook URL": "رابط فيسبوك",
+  "WhatsApp URL": "رابط واتساب",
+  "Announcement bar": "الشريط الإعلاني",
+  "Announcement (EN)": "الإعلان (إنجليزي)",
+  "Announcement (AR)": "الإعلان (عربي)",
+  "Show announcement bar": "إظهار الشريط الإعلاني",
+  "Homepage hero": "واجهة الصفحة الرئيسية",
+  "Hero eyebrow (EN)": "النص التعريفي أعلى العنوان (إنجليزي)",
+  "Hero eyebrow (AR)": "النص التعريفي أعلى العنوان (عربي)",
+  "Hero title (EN)": "العنوان الرئيسي (إنجليزي)",
+  "Hero title (AR)": "العنوان الرئيسي (عربي)",
+  "Hero text (EN)": "الوصف (إنجليزي)",
+  "Hero text (AR)": "الوصف (عربي)",
+  "Hero button (EN)": "نص الزر (إنجليزي)",
+  "Hero button (AR)": "نص الزر (عربي)",
+  "Hero image URL": "رابط صورة الواجهة",
+  "Homepage sections": "أقسام الصفحة الرئيسية",
+  "Payment method label (EN)": "وصف طريقة الدفع (إنجليزي)",
+  "Payment method label (AR)": "وصف طريقة الدفع (عربي)",
+  "Categories heading (EN)": "عنوان الفئات (إنجليزي)",
+  "Categories heading (AR)": "عنوان الفئات (عربي)",
+  "Featured heading (EN)": "عنوان المنتجات المميزة (إنجليزي)",
+  "Featured heading (AR)": "عنوان المنتجات المميزة (عربي)",
+  "Footer and search preview": "التذييل ونتيجة البحث",
+  "Footer tagline (EN)": "عبارة التذييل (إنجليزي)",
+  "Footer tagline (AR)": "عبارة التذييل (عربي)",
+  "Search description (EN)": "وصف نتائج البحث (إنجليزي)",
+  "Search description (AR)": "وصف نتائج البحث (عربي)",
+  "About page": "صفحة من نحن",
+  "Policies": "السياسات",
+  "Track stock quantities": "تفعيل تتبع كميات المخزون",
+  "Order follow-up": "متابعة الطلب",
+  "Customer service confirmation (EN)": "رسالة تأكيد خدمة العملاء (إنجليزي)",
+  "Customer service confirmation (AR)": "رسالة تأكيد خدمة العملاء (عربي)",
+  "Order request received.": "تم استلام طلبك",
+  "Your request has been received. Our customer service team will contact you to confirm availability and delivery details.": "استلمنا طلبك، وسيتواصل معك فريق خدمة العملاء لتأكيد توفر المنتجات وتفاصيل التوصيل.",
+  "Inventory": "المخزون",
+  "When disabled, products can be ordered without stock counts and orders wait for customer service confirmation.": "عند إيقاف التتبع، يمكن طلب المنتجات دون كميات مخزون، وتظل الطلبات معلّقة حتى تواصل خدمة العملاء مع العميل.",
+  "Shipping zones": "مناطق الشحن",
+  "Set the delivery areas and fee customers see at checkout. Leave the list empty to use the flat fee below.": "حدّد مناطق التوصيل ورسومها التي تظهر للعميل. اترك القائمة فارغة لاستخدام الرسوم الموحدة أدناه.",
+  "Zone name (English)": "اسم المنطقة (إنجليزي)",
+  "Zone name (Arabic)": "اسم المنطقة (عربي)",
+  "Shipping fee (EGP)": "رسوم الشحن (جنيه)",
+  "Remove zone": "حذف المنطقة",
+  "Add zone": "إضافة منطقة",
+  "Policy page sections": "أقسام صفحة السياسات",
+  "Section title (English)": "عنوان القسم (إنجليزي)",
+  "Section title (Arabic)": "عنوان القسم (عربي)",
+  "Text (English)": "النص (إنجليزي)",
+  "Text (Arabic)": "النص (عربي)",
+  "Remove section": "حذف القسم",
+  "Add section": "إضافة قسم",
+  "Product photos": "صور المنتج",
+  "Choose a product photo": "اختر صورة المنتج",
+  "Choose up to ten photos, 4 MB each": "اختر حتى ١٠ صور، بحد أقصى ٤ ميجابايت للصورة",
+  "Product photo": "صورة المنتج",
+  "Products can have up to ten photos.": "يمكن إضافة حتى ١٠ صور للمنتج.",
+  "TikTok URL": "رابط تيك توك",
+  "Archive": "الأرشيف",
+  "Archived products": "المنتجات المؤرشفة",
+  "Archived categories": "الفئات المؤرشفة",
+  "Active products": "المنتجات الحالية",
+  "Active categories": "الفئات الحالية",
+  "Restore": "استعادة",
+  "Delete permanently": "حذف نهائي",
+  "Permanently delete this product? Order history will remain.": "حذف المنتج نهائيًا؟ ستظل تفاصيله محفوظة في الطلبات القديمة.",
+  "Permanently delete this category and all its products? Order history will remain.": "حذف الفئة وكل منتجاتها نهائيًا؟ ستظل تفاصيل الطلبات القديمة محفوظة.",
+  "Archive this product?": "أرشفة هذا المنتج؟",
+  "Archive this category and all its products?": "أرشفة هذه الفئة وكل منتجاتها؟",
+  "Product archived.": "تمت أرشفة المنتج.",
+  "Product restored.": "تمت استعادة المنتج.",
+  "Product permanently deleted.": "تم حذف المنتج نهائيًا.",
+  "Category and its products archived.": "تمت أرشفة الفئة ومنتجاتها.",
+  "Category and its products restored.": "تمت استعادة الفئة ومنتجاتها.",
+  "Category and its products permanently deleted.": "تم حذف الفئة ومنتجاتها نهائيًا.",
+  "Archived with category": "مؤرشف مع الفئة",
+  "Restore the category first": "استعد الفئة أولًا",
+  "Use an Egyptian mobile number starting with 010, 011, 012 or 015.": "أدخل رقم موبايل مصري يبدأ بـ 010 أو 011 أو 012 أو 015.",
+  "Shipping fee for selected area": "سعر الشحن للمنطقة المختارة",
+  "Return reason": "سبب الإرجاع",
+  "Returned": "مرتجع",
+  "Cancel order": "إلغاء الطلب",
+  "Cancel this order?": "هل تريد إلغاء هذا الطلب؟",
+  "Order cancelled.": "تم إلغاء الطلب.",
+  "Only pending orders can be cancelled.": "يمكن إلغاء الطلبات قيد المراجعة فقط.",
+  "Upload logo image": "ارفع صورة اللوجو",
+  "Upload homepage image": "ارفع صورة الصفحة الرئيسية",
+  "Uploaded site images are stored under storage/app/public/site and referenced by the database.": "تُحفظ صور الموقع المرفوعة في storage/app/public/site ويُحفظ مسارها في قاعدة البيانات.",
+  "Logo preview": "معاينة اللوجو",
+  "Current logo": "اللوجو الحالي",
+  "Homepage image preview": "معاينة صورة الصفحة الرئيسية",
+  "Current homepage image": "صورة الصفحة الرئيسية الحالية",
+  "Use a secure HTTPS image URL.": "استخدم رابط صورة آمنًا يبدأ بـ HTTPS.",
+  "Choose an uploaded image or enter a secure image URL.": "اختر صورة مرفوعة أو أدخل رابط صورة آمنًا.",
+  "Back to store": "العودة إلى المتجر",
+  "Contact us on WhatsApp": "تواصل معنا عبر واتساب",
+  "Previous photo": "الصورة السابقة",
+  "Next photo": "الصورة التالية",
+  "Show photo": "اعرض الصورة",
+  "From date": "من تاريخ",
+  "To date": "إلى تاريخ",
+  "Expected revenue": "الإيراد المتوقع",
+  "Delivered revenue": "الإيراد الفعلي بعد التوصيل",
+  "Returned order value (lost sales)": "قيمة الطلبات المرتجعة (مبيعات مفقودة)",
+  "Confirmed, processing and shipped orders": "الطلبات المؤكدة أو الجاري تجهيزها أو المشحونة",
+  "Completed deliveries": "الطلبات التي تم توصيلها",
+  "Returned orders": "الطلبات المرتجعة",
+  "View terms and policies": "عرض الشروط والسياسات",
+  "Create account": "إنشاء حساب",
+  "Actions": "الإجراءات",
+  "Items": "المنتجات",
+  "More": "أخرى",
+  "Choose product photos": "اختيار صور المنتج",
+  "Choose category image": "اختيار صورة الفئة",
+  "My account": "حسابي",
+  "Manage your contact details and account preferences": "إدارة بيانات التواصل وإعدادات حسابك",
+  "My details": "بياناتي",
+  "Update the details we use to contact you about your orders.": "حدّث البيانات التي نستخدمها للتواصل معك بخصوص طلباتك.",
+  "Full name": "الاسم بالكامل",
+  "Phone number": "رقم الهاتف",
+  "Enter a valid Egyptian mobile number.": "أدخل رقم موبايل مصريًا صحيحًا.",
+  "Email": "البريد الإلكتروني",
+  "Address": "العنوان",
+  "Save changes": "حفظ التغييرات",
+  "Change password": "تغيير كلمة المرور",
+  "Account navigation": "التنقل في الحساب",
+  "Back to store": "العودة للمتجر",
+  "Log out": "تسجيل الخروج",
+  "Review your orders and their delivery status.": "راجع طلباتك وحالة توصيلها.",
+  "Delete my data": "حذف بياناتي",
+  "This removes your account and saved details. Your past orders stay with the store.": "سيتم حذف حسابك وبياناتك المحفوظة، مع الاحتفاظ بطلباتك السابقة لدى المتجر.",
+  "Resend verification email": "إعادة إرسال رسالة التحقق",
+  "Account settings": "إعدادات الحساب",
+  "Manage your account details and orders.": "إدارة بيانات حسابك وطلباتك.",
+  "Appearance": "المظهر",
+  "The ATHAR store uses a light, readable theme across the site.": "يستخدم متجر أثَر مظهرًا فاتحًا ومريحًا للقراءة في كل الصفحات.",
+  "Delete my account": "حذف حسابي",
+  "Use a strong password to protect your account.": "استخدم كلمة مرور قوية لحماية حسابك.",
+  "Current password": "كلمة المرور الحالية",
+  "New password": "كلمة المرور الجديدة",
+  "Confirm Password": "تأكيد كلمة المرور",
+  "Password": "كلمة المرور",
+  "Are you sure you want to delete your account?": "هل تريد بالتأكيد حذف حسابك؟",
+  "Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.": "سيتم حذف حسابك وبياناته نهائيًا. أدخل كلمة المرور لتأكيد الحذف.",
+  "Cancel": "إلغاء",
+  "Start shopping": "ابدأ التسوق"
+  ,"WhatsApp": "واتساب"
+  ,"Editable order confirmation message": "رسالة تأكيد الطلب قابلة للتعديل قبل الإرسال"
+  ,"Open WhatsApp message for :name": "افتح رسالة واتساب للعميل :name"
+  ,"Opens WhatsApp with an editable order confirmation message": "يفتح واتساب برسالة تأكيد طلب يمكنك تعديلها قبل الإرسال"
+  ,"Status for order :number": "حالة الطلب :number"
+  ,"Saved automatically when you leave this field": "يُحفظ تلقائيًا عند مغادرة هذا الحقل"
+  ,"Hello :name, this is ATHAR. We are contacting you to confirm order :number.": "أهلًا :name، معك فريق أثَر. نتواصل معك لتأكيد طلبك رقم :number."
+  ,"Order details:": "تفاصيل الطلب:"
+  ,"Subtotal: :amount EGP": "قيمة المنتجات: :amount جنيه"
+  ,"Shipping: :amount EGP": "الشحن: :amount جنيه"
+  ,"Total: :amount EGP": "الإجمالي: :amount جنيه"
+  ,"Name: :name": "الاسم: :name"
+  ,"Phone: :phone": "رقم الهاتف: :phone"
+  ,"City: :city": "المدينة: :city"
+  ,"Address: :address": "العنوان: :address"
+  ,"Please reply to confirm, or tell us if you would like to change anything. Thank you for choosing ATHAR!": "من فضلك أكد الطلب بالرد على الرسالة، وأخبرنا إذا رغبت في تعديل أي تفاصيل. شكرًا لاختيارك أثَر!"
+  ,"Email: :email": "البريد الإلكتروني: :email"
+  ,"Notes: :notes": "ملاحظات: :notes"
+  ,"Payment method: Cash on delivery.": "طريقة الدفع: الدفع عند الاستلام."
+  ,"Clear filter": "مسح التصفية"
+
+  ,"WhatsApp messages": "رسائل واتساب"
+  ,"Create one editable Egyptian Arabic message for each order status. The matching message opens when you click WhatsApp on an order.": "اكتب رسالة بالمصري لكل حالة من حالات الطلب. الرسالة المناسبة تفتح عند الضغط على واتساب في الطلب."
+  ,"Available placeholders": "البيانات المتاحة لإضافتها تلقائيًا"
+  ,"The pending order message starts with the default order confirmation in Egyptian Arabic. Leave a status message empty to remove it.": "رسالة الطلب المعلّق تبدأ افتراضيًا برسالة تأكيد الطلب بالمصري. اترك رسالة الحالة فارغة لحذفها."
+  ,"No message saved for this status": "لا توجد رسالة محفوظة لهذه الحالة"
+  ,"Message in Egyptian Arabic": "الرسالة بالمصري"
+  ,"Write the WhatsApp message for this status": "اكتب رسالة واتساب المناسبة للحالة دي"
+  ,"Delete message": "حذف الرسالة"
+  ,"Save messages": "حفظ الرسائل"
+  ,"Back to orders": "العودة للطلبات"
+  ,"Remove this WhatsApp message template?": "هل تريد حذف رسالة الحالة دي؟"
+  ,"WhatsApp message templates saved.": "تم حفظ رسائل واتساب لكل الحالات."
+  ,"WhatsApp message template removed.": "تم حذف رسالة الحالة."
+  ,"Manage messages": "إدارة الرسائل"
+  ,"Add :status message": "إضافة رسالة لحالة :status"
+  ,"Opens WhatsApp with the current status message. Review before sending.": "يفتح واتساب برسالة الحالة الحالية. راجعها قبل الإرسال."
+  ,"Minimum price (EGP)": "أقل سعر (جنيه)"
+  ,"Maximum price (EGP)": "أعلى سعر (جنيه)"
+  ,"Clear price filter": "مسح فلتر السعر"
+  ,"Minimum price cannot be greater than maximum.": "أقل سعر لازم يكون أقل من أو يساوي أعلى سعر."
+  ,"There is not enough stock to reopen this order.": "المخزون الحالي لا يكفي لإعادة فتح الطلب."
+  ,"Saving message…": "جارٍ حفظ الرسالة…"
+  ,"Message saved": "تم حفظ الرسالة"
+  ,"Message deleted": "تم حذف الرسالة"
+  ,"Please enter a return reason.": "من فضلك اكتب سبب الإرجاع."
+  ,"The return reason must be at least 5 characters.": "اكتب سبب الإرجاع في 5 أحرف على الأقل."
+  ,"Describe the reason for the return": "اكتب تفاصيل سبب الإرجاع"
+  ,"Save return status": "حفظ حالة الإرجاع"
+  ,"Order details": "تفاصيل الطلب"
+  ,"Customer details": "بيانات العميل"
+  ,"Shipping details": "بيانات الشحن"
+  ,"Payment and status": "الدفع وحالة الطلب"
+  ,"Order status": "حالة الطلب"
+  ,"Payment status": "حالة الدفع"
+  ,"Payment method": "طريقة الدفع"
+  ,"Customer notes": "ملاحظات العميل"
+  ,"Unit price": "سعر القطعة"
+  ,"Quantity": "الكمية"
+  ,"Line total": "إجمالي المنتج"
+  ,"View order details for :number": "عرض تفاصيل الطلب :number"
+  ,"Have an account?": "لديك حساب؟"
+  ,"Country and calling code": "الدولة وكود الاتصال"
+  ,"Enter a valid phone number for the selected country.": "أدخل رقم هاتف صحيحًا حسب الدولة المختارة."
+  ,"City / shipping area": "المدينة / منطقة الشحن"
+  ,"Default": "افتراضي"
+  ,"Cairo is selected by default. The shipping fee is shown beside each area.": "القاهرة محددة افتراضيًا، وسعر الشحن ظاهر بجوار كل منطقة."
+  ,"Cairo is the default city. The flat shipping fee applies until shipping areas are configured.": "القاهرة هي المدينة الافتراضية، وتُطبق رسوم الشحن الموحدة لحين إعداد مناطق الشحن."
+  ,"Other city": "مدينة أخرى"
+  ,"Enter your city": "اكتب اسم المدينة"
+}
+
+
+
+
+
+

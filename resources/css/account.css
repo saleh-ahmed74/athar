@@ -1,0 +1,50 @@
+.account-app-shell{min-height:100vh;background:var(--athar-bg,#fdf6e6);color:var(--athar-ink,#1f1611)}
+.account-app-header{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--athar-line,#eadfc6);background:#fffbf1ed;backdrop-filter:blur(12px)}
+.account-app-header-inner{min-height:76px;display:flex;align-items:center;gap:24px}
+.account-app-brand{display:flex;align-items:center;flex:none}
+.account-app-brand img{display:block;width:auto;max-width:160px;height:56px;object-fit:contain}
+.account-app-nav,.account-app-actions{display:flex;align-items:center;gap:16px}
+.account-app-nav{flex:1}
+.account-app-nav a,.account-sign-out{color:var(--athar-ink,#1f1611);font-size:14px;text-decoration:none}
+.account-app-nav a:hover,.account-sign-out:hover{color:var(--athar-brand,#6b4630)}
+.account-app-actions form{margin:0}
+.account-app-user{color:var(--athar-muted,#7a6a58);font-size:13px}
+.account-sign-out{min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid #e2bdb2;border-radius:9px;background:#fff4f0;color:#9e342d;padding:8px 12px;font-size:13px;font-weight:700;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}
+.account-sign-out:hover{border-color:#c87567;background:#fbe7e1;color:#842b24;transform:translateY(-1px)}
+.account-sign-out:focus-visible{outline:3px solid #d8a29a;outline-offset:2px}
+.account-sign-out svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.account-app-main{min-height:calc(100vh - 76px);padding-block:30px 60px}
+.account-settings-layout{display:grid;gap:22px}
+.account-settings-heading h1{margin:5px 0 8px;font:800 clamp(30px,4vw,42px)/1.1 Bricolage Grotesque,Figtree,Cairo,Georgia,serif}
+.account-settings-heading>p:last-child{margin:0;color:var(--athar-muted,#7a6a58)}
+.account-settings-content{display:grid;grid-template-columns:210px minmax(0,1fr);align-items:start;gap:20px}
+.account-settings-tabs{display:grid;gap:6px;padding:8px;border:1px solid var(--athar-line,#eadfc6);border-radius:13px;background:var(--athar-surface,#fffbf1)}
+.account-settings-tabs a{padding:10px 12px;border-radius:8px;color:var(--athar-muted,#7a6a58);font-size:14px;text-decoration:none}
+.account-settings-tabs a:hover,.account-settings-tabs a.is-current{background:#f1e4cb;color:var(--athar-brand,#6b4630);font-weight:700}
+.account-settings-panel{display:grid;gap:14px;min-width:0}
+.account-settings-panel h2,.account-settings-card h2{margin:0;font:700 21px/1.2 Bricolage Grotesque,Figtree,Cairo,Georgia,serif}
+.account-settings-card{display:grid;gap:18px;padding:clamp(16px,3vw,24px);border:1px solid var(--athar-line,#eadfc6);border-radius:14px;background:var(--athar-surface,#fffbf1);box-shadow:0 4px 18px #39251208;color:var(--athar-ink,#1f1611)}
+.account-settings-card p{margin:5px 0 0;color:var(--athar-muted,#7a6a58);font-size:14px}
+.account-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.account-form-grid .field{display:grid;gap:6px;min-width:0}
+.account-form-grid .field>span:first-child{font-size:13px;font-weight:600}
+.account-form-grid input,.account-form-grid textarea{width:100%;min-height:44px;border:1px solid var(--athar-line,#eadfc6);border-radius:9px;background:#fffdf8;color:var(--athar-ink,#1f1611);padding:10px 12px}
+.account-form-grid textarea{resize:vertical}
+.account-address-field{grid-column:1/-1}
+.account-settings-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.account-saved-message{color:var(--athar-ok,#4d7a4b);font-size:14px}
+.account-notice{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:9px;background:#fff6e6;color:var(--athar-muted,#7a6a58);font-size:13px}
+.account-settings-card-heading,.account-order-preview-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.account-order-list{display:grid;gap:10px}
+.account-order-preview{display:grid;gap:8px;padding:14px;border:1px solid var(--athar-line,#eadfc6);border-radius:10px;background:#fffdf8}
+.account-order-preview p{margin:0;overflow-wrap:anywhere}
+.account-delete-card{border-color:#ead3ce}
+.account-delete-card>section{margin:0!important;padding:0!important}
+.account-delete-card flux\:button[variant="danger"]{border-radius:9px}
+.account-delete-action{margin:0!important;padding:0!important}
+.account-cart-link{padding:7px 10px;font-size:13px}
+.account-password-form{max-width:620px}
+.account-password-form flux\:input{display:block;margin-bottom:16px}
+.account-app-main .admin-heading{margin-top:0}
+@media(max-width:760px){.account-app-header-inner{min-height:0;padding-block:8px;gap:10px;flex-wrap:wrap}.account-app-brand img{height:46px;max-width:120px}.account-app-nav{order:3;flex-basis:100%;gap:14px;overflow-x:auto;border-top:1px solid var(--athar-line,#eadfc6);padding-top:8px}.account-app-nav a{white-space:nowrap;font-size:13px}.account-app-actions{margin-inline-start:auto;gap:8px}.account-app-user{display:none}.account-app-actions .button.small{padding:6px 9px;font-size:12px}.account-app-actions form{display:block}.account-sign-out{min-height:36px;font-size:12px;padding:6px 9px}.account-app-main{padding-block:20px 40px}.account-settings-content{grid-template-columns:1fr;gap:12px}.account-settings-tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:5px}.account-settings-tabs a{text-align:center;padding:9px 5px;font-size:12px}}
+@media(max-width:480px){.account-form-grid{grid-template-columns:1fr}.account-address-field{grid-column:auto}.account-settings-card{padding:16px}.account-app-actions .button.small{font-size:11px}.account-settings-tabs a{font-size:11px}}
