@@ -9,7 +9,19 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="offline-cacheable" content="{{ auth()->guest() ? 'public' : 'private' }}">
     <title>{{ ($title ?? __('Home')).' — '.$storeName }}</title>
-    <meta name="description" content="{{ $storeSetting->localized('seo_description') }}">
+    <meta name="description" content="{{ $storeSetting->localized('seo_description') ?: $storeName }}">
+    <link rel="icon" href="{{ $storeLogo }}">
+    <meta property="og:site_name" content="{{ $storeName }}">
+    <meta property="og:title" content="{{ ($title ?? __('Home')).' — '.$storeName }}">
+    <meta property="og:description" content="{{ $storeSetting->localized('seo_description') ?: $storeName }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ url($storeLogo) }}">
+    <meta property="og:image:alt" content="{{ $storeName }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ ($title ?? __('Home')).' — '.$storeName }}">
+    <meta name="twitter:description" content="{{ $storeSetting->localized('seo_description') ?: $storeName }}">
+    <meta name="twitter:image" content="{{ url($storeLogo) }}">
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     @if (request()->routeIs('home') && ($heroImagePreload = $storeSetting->imageUrl('hero_image_url')))<link rel="preload" as="image" href="{{ $heroImagePreload }}" fetchpriority="high">@endif
     <link rel="preload" as="style" href="https://fonts.bunny.net/css?family=bricolage-grotesque:500,700,800|cairo:400,500,600,700,800|figtree:400,500,600,700&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link href="https://fonts.bunny.net/css?family=bricolage-grotesque:500,700,800|cairo:400,500,600,700,800|figtree:400,500,600,700&display=swap" rel="stylesheet"></noscript>

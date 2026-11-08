@@ -3,6 +3,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->isLocale('ar') ? 'rtl' : 'ltr' }}">
     <head>
         @include('partials.head')
+        <link rel="icon" href="{{ $storeSetting->imageUrl('logo_url') ?: asset('images/athar-logo.png') }}">
     </head>
     <body class="auth-page min-h-screen antialiased">
         <div class="auth-shell flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">

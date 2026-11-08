@@ -333,3 +333,12 @@ html[dir="rtl"] .order-detail-totals{margin-inline-start:0;margin-inline-end:aut
 .phone-input-row select,.phone-input-row input { min-width:0; min-height:43px; border:1px solid var(--athar-line); border-radius:9px; background:var(--athar-surface); color:var(--athar-ink); padding:9px 8px; }
 @media(max-width:620px){.whatsapp-template-card-heading{align-items:flex-start;flex-direction:column}.whatsapp-template-card textarea{min-height:130px}}
 @media(max-width:420px){.phone-input-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+/* Product gallery supports horizontal touch swipes. */
+.detail-gallery-track{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+
+/* Keep the dashboard order actions readable on narrow screens. */
+@media(max-width:620px){.dashboard-orders-head{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:9px}.dashboard-orders-head h2{min-width:0;overflow-wrap:anywhere}.dashboard-orders-head .table-actions{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:12px}.dashboard-orders-head .table-actions>*{white-space:nowrap}}
+
+
+/* Keep the password recovery link below the password field. */
+.login-forgot-row{display:flex;justify-content:flex-end;width:100%;margin-top:-16px}.login-forgot-link{position:static!important;display:inline-block;width:max-content;max-width:100%;text-align:right;direction:ltr;white-space:nowrap}

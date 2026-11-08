@@ -40,7 +40,7 @@ class HomePage extends Component
         return view('livewire.storefront.home-page', [
             'categories' => Category::query()->where('is_active', true)->whereNull('archived_at')->with(['products' => fn ($query) => $query->where('is_active', true)->whereNull('archived_at')->whereNotNull('image_path')->limit(1)])->withCount(['products' => fn ($query) => $query->where('is_active', true)->whereNull('archived_at')])->orderBy('sort_order')->limit(6)->get(),
             'settings' => StoreSetting::current(),
-            'featuredProducts' => Product::query()->where('is_active', true)->whereNull('archived_at')->whereHas('category', fn ($query) => $query->where('is_active', true)->whereNull('archived_at'))->orderByDesc('is_featured')->latest()->limit(8)->get(),
+            'featuredProducts' => Product::query()->where('is_active', true)->whereNull('archived_at')->whereHas('category', fn ($query) => $query->where('is_active', true)->whereNull('archived_at'))->latest('created_at')->latest('id')->limit(8)->get(),
         ])->layout('layouts.storefront', ['title' => __('Home')]);
     }
 }
