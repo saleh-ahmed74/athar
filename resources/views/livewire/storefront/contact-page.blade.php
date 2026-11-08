@@ -1,9 +1,9 @@
-<section class="content-card">
+<section class="content-card contact-page">
     <p class="hero-eyebrow">{{ \App\Models\StoreSetting::current()->store_name ?: config('app.name') }}</p><h1 class="page-title">{{ __('Contact us') }}</h1>
     <p class="note">{{ __('Questions about an order or a product? Send us a message.') }}</p>
     @if (session('status'))<p class="status-message">{{ session('status') }}</p>@endif
     @error('form')<p class="alert">{{ $message }}</p>@enderror
-    <form class="checkout-form" wire:submit="send" style="max-width:650px;margin-top:20px">
+    <form class="checkout-form contact-form" wire:submit="send">
         <div class="field"><label for="contact-name">{{ __('Name') }}</label><input id="contact-name" autocomplete="name" wire:model="name">@error('name')<span class="error">{{ $message }}</span>@enderror</div>
         <div class="field"><label for="contact-email">{{ __('Email') }}</label><input id="contact-email" type="email" autocomplete="email" wire:model="email">@error('email')<span class="error">{{ $message }}</span>@enderror</div>
         <div class="field"><label for="contact-phone">{{ __('Phone') }} ({{ __('optional') }})</label><input id="contact-phone" type="tel" dir="ltr" wire:model="phone">@error('phone')<span class="error">{{ $message }}</span>@enderror</div>

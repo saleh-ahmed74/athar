@@ -274,3 +274,10 @@ html[dir="rtl"] .order-detail-totals{margin-inline-start:0;margin-inline-end:aut
 @media(max-width:420px){.phone-input-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 
 .hero-image{display:block;width:100%;height:auto;max-height:300px;object-fit:cover;border-radius:12px;margin-bottom:18px}
+/* Product gallery supports horizontal touch swipes. */
+.detail-gallery-track{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+
+/* Keep the contact page form contained and comfortable on mobile. */
+.contact-page{width:100%;max-width:760px;margin-inline:auto}
+.contact-page .contact-form{width:100%;max-width:650px;margin-top:20px}
+@media(max-width:620px){.contact-page{padding:14px}.contact-page .contact-form{margin-top:16px}.contact-page .contact-form>.button{width:100%}}

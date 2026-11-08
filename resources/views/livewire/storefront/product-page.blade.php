@@ -2,7 +2,11 @@
     <div class="product-detail">
         <div class="detail-gallery">
             @if ($productImages !== [])
-                <div class="detail-gallery-track" aria-label="{{ __('Product photos') }}">
+                <div class="detail-gallery-track" aria-label="{{ __('Product photos') }}" @if (count($productImages) > 1) tabindex="0" @endif
+                    x-data="{ touchStartX: 0, touchStartY: 0 }"
+                    x-on:touchstart.passive="touchStartX = $event.changedTouches[0].clientX; touchStartY = $event.changedTouches[0].clientY"
+                    x-on:touchend="let deltaX = $event.changedTouches[0].clientX - touchStartX; let deltaY = $event.changedTouches[0].clientY - touchStartY; if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) { $wire.call(deltaX < 0 ? 'nextImage' : 'previousImage') }"
+                    x-on:keydown.left.prevent="$wire.previousImage()" x-on:keydown.right.prevent="$wire.nextImage()">
                     @foreach ($productImages as $index => $imagePath)
                         <figure @class(['detail-image', 'is-hidden' => $activeImageIndex !== $index]) id="product-photo-{{ $product->id }}-{{ $index }}" aria-hidden="{{ $activeImageIndex !== $index ? 'true' : 'false' }}"><img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($imagePath) }}" alt="{{ app()->isLocale('ar') ? ($product->name_ar ?: $product->name) : $product->name }} — {{ $index + 1 }}"></figure>
                     @endforeach

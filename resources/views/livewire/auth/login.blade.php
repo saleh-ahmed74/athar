@@ -104,13 +104,16 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 placeholder="Password"
             />
 
-            @if (Route::has('password.request'))
-                <x-text-link class="absolute right-0 top-0" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </x-text-link>
-            @endif
         </div>
 
+
+        @if (Route::has('password.request'))
+            <div class="login-forgot-row">
+                <x-text-link class="login-forgot-link" href="{{ route('password.request') }}">
+                    {{ __('Forgot your password?') }}
+                </x-text-link>
+            </div>
+        @endif
         <!-- Remember Me -->
         <flux:checkbox wire:model="remember" label="{{ __('Remember me') }}" />
 
