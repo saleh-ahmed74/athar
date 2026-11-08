@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('public', fn (Request $request): Limit => Limit::perMinute(60)->by($request->ip()));
         RateLimiter::for('admin', fn (Request $request): Limit => Limit::perMinute(60)->by($request->user()?->id.'|'.$request->ip()));
         RateLimiter::for('checkout', fn (Request $request): Limit => Limit::perMinute(5)->by($request->user()?->id ?: $request->ip()));
-        RateLimiter::for('contact', fn (Request $request): Limit => Limit::perMinute(3)->by($request->ip()));
+        RateLimiter::for('contact', fn (Request $request): Limit => Limit::perMinute(30)->by($request->ip()));
     }
 
     private function emailAndIpKey(Request $request): string
