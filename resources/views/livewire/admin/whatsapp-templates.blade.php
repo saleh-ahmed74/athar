@@ -18,6 +18,9 @@
                     <textarea rows="7" dir="rtl" lang="ar" wire:model.blur="templates.{{ $status }}" wire:loading.attr="disabled" wire:target="templates.{{ $status }}" placeholder="{{ __('Write the WhatsApp message for this status') }}"></textarea>
                 </label>
                 @error('templates.'.$status)<span class="error">{{ $message }}</span>@enderror
+                <div class="whatsapp-template-save-row">
+                    <button class="button small" type="button" wire:click="saveTemplate('{{ $status }}')" wire:loading.attr="disabled" wire:target="saveTemplate('{{ $status }}')">{{ __('Save changes') }}</button>
+                </div>
                 <div class="whatsapp-template-feedback" role="status" aria-live="polite">
                     <span wire:loading wire:target="templates.{{ $status }}">{{ __('Saving message…') }}</span>
                     @if (($messageFeedback[$status] ?? '') === 'saved')<span wire:loading.remove wire:target="templates.{{ $status }}">{{ __('Message saved') }}</span>@endif
