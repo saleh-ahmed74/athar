@@ -9,7 +9,7 @@
         <div class="field"><label for="contact-phone">{{ __('Phone') }} ({{ __('optional') }})</label><input id="contact-phone" type="tel" dir="ltr" wire:model="phone">@error('phone')<span class="error">{{ $message }}</span>@enderror</div>
         <div class="field"><label for="contact-subject">{{ __('Subject') }}</label><input id="contact-subject" wire:model="subject">@error('subject')<span class="error">{{ $message }}</span>@enderror</div>
         <div class="field"><label for="contact-message">{{ __('Message') }}</label><textarea id="contact-message" rows="5" wire:model="message"></textarea>@error('message')<span class="error">{{ $message }}</span>@enderror</div>
-        <div class="field" aria-hidden="true" style="position:absolute;left:-10000px"><label for="website">Website</label><input id="website" tabindex="-1" autocomplete="off" wire:model="website"></div>
+        <div class="field visually-hidden" aria-hidden="true"><label for="website">Website</label><input id="website" tabindex="-1" autocomplete="off" wire:model="website"></div>
         <button class="button" type="submit" wire:loading.attr="disabled" wire:target="send">{{ __('Send message') }}</button>
     </form>
 </section>
