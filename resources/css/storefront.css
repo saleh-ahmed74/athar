@@ -281,3 +281,5 @@ html[dir="rtl"] .order-detail-totals{margin-inline-start:0;margin-inline-end:aut
 .contact-page{width:100%;max-width:760px;margin-inline:auto}
 .contact-page .contact-form{width:100%;max-width:650px;margin-top:20px}
 @media(max-width:620px){.contact-page{padding:14px}.contact-page .contact-form{margin-top:16px}.contact-page .contact-form>.button{width:100%}}
+/* Keep storefront sections inside the mobile viewport and prevent sideways page scrolling. */
+@media(max-width:760px){html,body{width:100%;max-width:100%;overflow-x:hidden}.site-header,.site-footer{width:100%;max-width:100%;min-width:0}.site-header .wrap,.site-footer .wrap{width:calc(100% - 24px);max-width:560px}.page-wrap.wrap{width:100%;max-width:100%;padding-inline:12px}.contact-page{width:100%;max-width:560px;min-width:0;box-sizing:border-box}.contact-page .contact-form,.contact-page .field{min-width:0}}
