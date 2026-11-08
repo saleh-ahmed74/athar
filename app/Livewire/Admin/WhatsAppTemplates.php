@@ -39,6 +39,12 @@ class WhatsAppTemplates extends Component
         }
     }
 
+    public function saveTemplate(string $status): void
+    {
+        abort_unless(in_array($status, self::STATUSES, true), 404);
+        $this->persistTemplate($status, 'saved');
+    }
+
     public function deleteTemplate(string $status): void
     {
         abort_unless(in_array($status, self::STATUSES, true), 404);

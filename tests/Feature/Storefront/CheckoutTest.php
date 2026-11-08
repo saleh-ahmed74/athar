@@ -445,17 +445,18 @@ test('admin can save and remove a custom Egyptian WhatsApp template for an order
     Cache::flush();
 
     $templates = Livewire::actingAs($admin)->test(AdminWhatsAppTemplates::class)
-        ->assertSee('Message in Egyptian Arabic')
+        ->assertSee('الرسالة بالمصري')
         ->assertDontSee('Create one editable Egyptian Arabic message')
         ->set('templates.confirmed', 'أهلًا يا :name، طلبك :order_number')
-        ->assertSee('Message saved')
+        ->call('saveTemplate', 'confirmed')
+        ->assertSee('تم حفظ الرسالة')
         ->assertHasNoErrors();
     expect($templates->get('templates.pending'))->toContain('أهلًا يا :name');
     expect(StoreSetting::query()->firstOrFail()->whatsapp_status_templates['confirmed'])->toBe('أهلًا يا :name، طلبك :order_number');
 
     Livewire::actingAs($admin)->test(AdminWhatsAppTemplates::class)
         ->call('deleteTemplate', 'confirmed')
-        ->assertSee('Message deleted')
+        ->assertSee('تم حذف الرسالة')
         ->assertHasNoErrors();
 
     expect(StoreSetting::query()->firstOrFail()->whatsapp_status_templates['confirmed'])->toBe('');
