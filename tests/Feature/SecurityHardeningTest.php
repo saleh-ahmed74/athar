@@ -33,6 +33,12 @@ test('shop query filters reject unbounded values', function () {
     $this->get('/shop?q='.str_repeat('a', 101))->assertUnprocessable();
 });
 
+test('contact page allows multiple visits from the same IP', function () {
+    foreach (range(1, 5) as $visit) {
+        $this->get('/contact')->assertOk();
+    }
+});
+
 test('password breach check uses the k-anonymity range service', function () {
     Http::fake(['https://api.pwnedpasswords.com/range/*' => Http::response("FFFFF:0\n", 200)]);
 
