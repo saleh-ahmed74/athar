@@ -32,6 +32,9 @@
   "Browse by category": "تسوق حسب الفئة",
   "Featured pieces": "اختياراتنا",
   "View all": "عرض الكل",
+  "Show less": "عرض أقل",
+  "Close hero text": "إغلاق النص",
+  "Show hero text": "عرض النص",
   "Add to cart": "أضف إلى السلة",
   "Out of stock": "نفد من المخزون",
   "Your cart is empty.": "سلتك فارغة.",
@@ -298,6 +301,21 @@
   ,"Cairo is the default city. The flat shipping fee applies until shipping areas are configured.": "القاهرة هي المدينة الافتراضية، وتُطبق رسوم الشحن الموحدة لحين إعداد مناطق الشحن."
   ,"Other city": "مدينة أخرى"
   ,"Enter your city": "اكتب اسم المدينة"
+  ,"Mark as a best seller": "تحديد المنتج كالأكثر مبيعًا"
+  ,"Only selected products appear in the best sellers section on home.": "المنتجات المحددة فقط ستظهر في قسم الأكثر مبيعًا بالصفحة الرئيسية."
+  ,"Best seller filter": "تصفية المنتجات"
+  ,"Best sellers": "الأكثر مبيعًا"
+  ,"Pagination Navigation": "التنقل بين الصفحات"
+  ,"Showing :first to :last of :total results": "عرض :first إلى :last من :total نتيجة"
+  ,"Previous": "السابق"
+  ,"Next": "التالي"
+  ,"Go to page :page": "الانتقال إلى الصفحة :page"
+  ,"Menu": "القائمة"
+  ,"Homepage gallery images": "صور معرض الصفحة الرئيسية"
+  ,"Upload homepage images": "رفع صور الصفحة الرئيسية"
+  ,"Remove image": "إزالة الصورة"
+  ,"Upload up to ten images. They rotate automatically on the homepage; swipe or use the arrow keys to move between them.": "ارفع حتى 10 صور. ستتبدل تلقائيًا في الصفحة الرئيسية، ويمكنك السحب أو استخدام الأسهم للتنقل بينها."
+  ,"The homepage gallery can contain up to ten images.": "يمكن أن يحتوي معرض الصفحة الرئيسية على 10 صور كحد أقصى."
 }
 
 

@@ -21,6 +21,9 @@ class ShopPage extends Component
     #[Url(except: 'featured')]
     public string $sort = 'featured';
 
+    #[Url(as: 'highlight', except: '')]
+    public string $highlight = '';
+
     #[Url(as: 'min_price', except: '')]
     public string $minPrice = '';
 
@@ -34,10 +37,12 @@ class ShopPage extends Component
         $queryValidator = Validator::make(request()->query(), [
             'q' => ['nullable', 'string', 'max:100'],
             'sort' => ['nullable', 'in:featured,price_asc,price_desc'],
+            'highlight' => ['nullable', 'in:bestseller'],
             'min_price' => ['nullable', 'numeric', 'min:0', 'max:99999999'],
             'max_price' => ['nullable', 'numeric', 'min:0', 'max:99999999'],
         ]);
         abort_if($queryValidator->fails(), 422);
+        $this->highlight = (string) request()->query('highlight', '');
         if ($category) {
             abort_unless($category->is_active && ! $category->archived_at, 404);
             $this->categorySlug = $category->slug;
@@ -53,6 +58,12 @@ class ShopPage extends Component
     public function updatedSort(): void
     {
         $this->validateOnly('sort', ['sort' => ['required', 'in:featured,price_asc,price_desc']]);
+        $this->resetPage();
+    }
+
+    public function updatedHighlight(): void
+    {
+        $this->validateOnly('highlight', ['highlight' => ['nullable', 'in:bestseller']]);
         $this->resetPage();
     }
 
@@ -81,6 +92,7 @@ class ShopPage extends Component
             ->where('is_active', true)
             ->whereNull('archived_at')
             ->whereHas('category', fn ($query) => $query->where('is_active', true)->whereNull('archived_at'))
+            ->when($this->highlight === 'bestseller', fn ($query) => $query->where('is_bestseller', true))
             ->when($this->categorySlug, fn ($query) => $query->whereHas('category', fn ($categoryQuery) => $categoryQuery->where('slug', $this->categorySlug)))
             ->when(is_numeric($this->minPrice) && (float) $this->minPrice >= 0, fn ($query) => $query->where('price', '>=', (float) $this->minPrice))
             ->when(is_numeric($this->maxPrice) && (float) $this->maxPrice >= 0, fn ($query) => $query->where('price', '<=', (float) $this->maxPrice))
@@ -97,7 +109,7 @@ class ShopPage extends Component
 
         return view('livewire.storefront.shop-page', [
             'products' => $products->paginate(12),
-            'categories' => Category::query()->where('is_active', true)->whereNull('archived_at')->orderBy('sort_order')->get(),
+            'categories' => Category::query()->where('is_active', true)->whereNull('archived_at')->with(['products' => fn ($query) => $query->where('is_active', true)->whereNull('archived_at')->whereNotNull('image_path')->limit(1)])->orderBy('sort_order')->get(),
             'selectedCategory' => $this->categorySlug ? Category::query()->where('slug', $this->categorySlug)->whereNull('archived_at')->first() : null,
             'invalidPriceRange' => is_numeric($this->minPrice) && is_numeric($this->maxPrice) && (float) $this->minPrice > (float) $this->maxPrice,
             'trackStock' => (bool) StoreSetting::current()->track_stock,

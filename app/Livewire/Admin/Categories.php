@@ -43,6 +43,7 @@ class Categories extends Component
         abort_if($this->showArchived, 404);
         $this->resetForm();
         $this->showForm = true;
+        $this->dispatch('category-form-opened');
     }
 
     public function editCategory(int $id): void
@@ -58,6 +59,7 @@ class Categories extends Component
         $this->descriptionAr = $category->description_ar ?? '';
         $this->isActive = $category->is_active;
         $this->showForm = true;
+        $this->dispatch('category-form-opened');
     }
 
     public function saveCategory(): void

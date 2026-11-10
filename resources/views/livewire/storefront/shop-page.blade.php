@@ -1,10 +1,13 @@
-<section>
+<section class="shop-page">
     <div class="section-head"><div><p class="hero-eyebrow">{{ \App\Models\StoreSetting::current()->store_name ?: config('app.name') }}</p><h1 class="page-title">{{ $selectedCategory ? (app()->isLocale('ar') ? ($selectedCategory->name_ar ?: $selectedCategory->name) : $selectedCategory->name) : __('All products') }}</h1></div></div>
     <div class="shop-filter-stack">
         <div class="filters shop-search-filters">
-            <input type="search" aria-label="{{ __('Search products') }}" placeholder="{{ __('Search products') }}" wire:model.live.debounce.350ms="search">
+            <input id="shop-search" type="search" aria-label="{{ __('Search products') }}" placeholder="{{ __('Search products') }}" wire:model.live.debounce.350ms="search">
             <select aria-label="{{ __('Sort by') }}" wire:model.live="sort">
                 <option value="featured">{{ __('Newest') }}</option><option value="price_asc">{{ __('Price: low to high') }}</option><option value="price_desc">{{ __('Price: high to low') }}</option>
+            </select>
+            <select aria-label="{{ __('Best seller filter') }}" wire:model.live="highlight">
+                <option value="">{{ __('All products') }}</option><option value="bestseller">{{ __('Best sellers') }}</option>
             </select>
         </div>
         <div class="price-range-filters">
@@ -18,12 +21,18 @@
     @if ($invalidPriceRange)
         <p class="alert" role="alert">{{ __('Minimum price cannot be greater than maximum.') }}</p>
     @endif
-    <nav class="category-filters" aria-label="{{ __('Categories') }}">
-        <a class="button small secondary" href="{{ route('shop') }}" wire:navigate>{{ __('All products') }}</a>
-        @foreach ($categories as $category)
-            <a class="button small secondary" href="{{ route('category.show', $category->slug) }}" wire:navigate>{{ app()->isLocale('ar') ? ($category->name_ar ?: $category->name) : $category->name }}</a>
-        @endforeach
-    </nav>
+    <div class="shop-category-browser">
+        <div class="shop-category-heading"><h2>{{ __('Browse by category') }}</h2><a class="button small secondary shop-view-all" href="{{ route('shop') }}" wire:navigate>{{ __('View all') }}</a></div>
+        <nav class="shop-category-links" aria-label="{{ __('Categories') }}">
+            @foreach ($categories as $category)
+                @php($categoryImage = $category->image_path ?: $category->products->first()?->image_path)
+                <a class="shop-category-chip{{ $selectedCategory?->slug === $category->slug ? ' is-active' : '' }}" href="{{ route('category.show', $category->slug) }}" wire:navigate @if($selectedCategory?->slug === $category->slug) aria-current="page" @endif>
+                    <span class="shop-category-image">@if($categoryImage)<img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($categoryImage) }}" alt="" loading="lazy">@else<span aria-hidden="true">{{ mb_substr(app()->isLocale('ar') ? ($category->name_ar ?: $category->name) : $category->name, 0, 1) }}</span>@endif</span>
+                    <span>{{ app()->isLocale('ar') ? ($category->name_ar ?: $category->name) : $category->name }}</span>
+                </a>
+            @endforeach
+        </nav>
+    </div>
     <div class="product-grid">
         @forelse ($products as $product)
             <div><x-storefront.product-card :product="$product" :priority="$loop->first" />

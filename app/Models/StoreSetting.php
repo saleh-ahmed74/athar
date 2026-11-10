@@ -19,7 +19,7 @@ class StoreSetting extends Model
     /** @return array<string, string> */
     protected function casts(): array
     {
-        return ['shipping_fee' => 'decimal:2', 'shipping_zones' => 'array', 'policy_sections' => 'array', 'whatsapp_status_templates' => 'array', 'show_announcement' => 'boolean', 'track_stock' => 'boolean'];
+        return ['shipping_fee' => 'decimal:2', 'shipping_zones' => 'array', 'policy_sections' => 'array', 'whatsapp_status_templates' => 'array', 'hero_images' => 'array', 'show_announcement' => 'boolean', 'track_stock' => 'boolean'];
     }
 
     public static function current(): self
@@ -52,5 +52,26 @@ class StoreSetting extends Model
         }
 
         return Storage::disk('public')->url(ltrim((string) $value, '/'));
+    }
+
+    /** @return list<string> */
+    public function heroImageUrls(): array
+    {
+        $images = $this->hero_images;
+        if (! is_array($images) || $images === []) {
+            $images = filled($this->hero_image_url) ? [$this->hero_image_url] : [];
+        }
+
+        return array_values(array_filter(array_map(function (mixed $image): ?string {
+            if (! is_string($image) || trim($image) === '') {
+                return null;
+            }
+
+            if (filter_var($image, FILTER_VALIDATE_URL)) {
+                return in_array(parse_url($image, PHP_URL_SCHEME), ['https', 'http'], true) ? $image : null;
+            }
+
+            return Storage::disk('public')->url(ltrim($image, '/'));
+        }, $images)));
     }
 }
