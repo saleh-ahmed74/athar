@@ -68,6 +68,7 @@ class WhatsAppTemplates extends Component
 
         $this->templates[$status] = $message;
         $this->messageFeedback[$status] = $feedback;
+        $this->dispatch('admin-toast', message: $feedback === 'deleted' ? __('Message deleted') : __('Message saved'));
     }
 
     public function render(): View

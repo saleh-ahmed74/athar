@@ -1,9 +1,9 @@
-<section>
+<section x-data x-on:category-form-opened.window="setTimeout(() => document.getElementById('category-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)">
     <div class="admin-heading"><h1>{{ $showArchived ? __('Archived categories') : __('Categories') }}</h1><div class="table-actions"><button class="button secondary small" wire:click="toggleArchiveView">{{ $showArchived ? __('Active categories') : __('Archive') }}</button>@unless($showArchived)<button class="button small" wire:click="createCategory">{{ __('Add category') }}</button>@endunless</div></div>
     @if (session('status'))<p class="status-message">{{ session('status') }}</p>@endif
     @if (session('error'))<p class="alert">{{ session('error') }}</p>@endif
     @if ($showForm)
-        <form class="admin-card admin-form" wire:submit="saveCategory"><h2>{{ $categoryId ? __('Edit category') : __('Add category') }}</h2>
+        <form id="category-editor" class="admin-card admin-form" wire:submit="saveCategory"><h2>{{ $categoryId ? __('Edit category') : __('Add category') }}</h2>
             <div class="form-grid"><div class="field"><label>{{ __('Name') }} (EN)</label><input wire:model="name">@error('name')<span class="error">{{ $message }}</span>@enderror</div><div class="field"><label>{{ __('Name') }} (AR)</label><input dir="rtl" wire:model="nameAr">@error('nameAr')<span class="error">{{ $message }}</span>@enderror</div></div>
             <div class="form-grid"><div class="field"><label>{{ __('Description') }} (EN)</label><textarea rows="2" wire:model="description"></textarea></div><div class="field"><label>{{ __('Description') }} (AR)</label><textarea dir="rtl" rows="2" wire:model="descriptionAr"></textarea></div></div>
             <div class="field"><label>{{ __('Category image') }} (max 4 MB)</label><label class="upload-button" for="category-image">{{ __('Choose category image') }}</label><input class="visually-hidden" id="category-image" type="file" accept="image/jpeg,image/png,image/webp" wire:model="image">@error('image')<span class="error">{{ $message }}</span>@enderror@if ($image && $image->isPreviewable())<img class="settings-image-preview" src="{{ $image->temporaryUrl() }}" alt="{{ __('Preview') }}">@endif</div>

@@ -495,7 +495,7 @@ test('customer can cancel only their own pending orders', function () {
         ->assertForbidden();
 });
 
-test('site settings can upload and persist a logo in public storage', function () {
+test('admin can update homepage hero gallery images and persist them', function () {
     Cache::flush();
     Storage::fake('public');
     $admin = User::factory()->create();
@@ -503,8 +503,12 @@ test('site settings can upload and persist a logo in public storage', function (
     StoreSetting::factory()->create(['store_name' => 'ATHAR', 'currency_symbol' => 'EGP']);
 
     Livewire::actingAs($admin)->test(AdminStoreSettings::class)
+        ->set('form.hero_title_en', 'A warmer home')
         ->set('logoFile', UploadedFile::fake()->image('athar.png', 1400, 700))
-        ->set('heroImageFile', UploadedFile::fake()->image('hero.jpg', 2400, 1400))
+        ->set('heroImageFiles', [
+            UploadedFile::fake()->image('hero.jpg', 2400, 1400),
+            UploadedFile::fake()->image('hero-2.jpg', 1600, 900),
+        ])
         ->call('save')
         ->assertHasNoErrors();
 
@@ -512,11 +516,76 @@ test('site settings can upload and persist a logo in public storage', function (
     $logoPath = $settings->logo_url;
     $heroPath = $settings->hero_image_url;
     expect($logoPath)->toStartWith('site/')->toEndWith('.webp')
-        ->and($heroPath)->toStartWith('site/')->toEndWith('.webp');
+        ->and($heroPath)->toStartWith('site/')->toEndWith('.webp')
+        ->and($settings->hero_images)->toHaveCount(2)
+        ->and($settings->hero_images[0])->toBe($heroPath);
     Storage::disk('public')->assertExists($logoPath);
-    Storage::disk('public')->assertExists($heroPath);
+    foreach ($settings->hero_images as $heroImagePath) {
+        Storage::disk('public')->assertExists($heroImagePath);
+    }
     expect(getimagesize(Storage::disk('public')->path($logoPath)))->toMatchArray([0 => 1200, 1 => 600, 2 => IMAGETYPE_WEBP])
         ->and(getimagesize(Storage::disk('public')->path($heroPath)))->toMatchArray([0 => 1920, 1 => 1120, 2 => IMAGETYPE_WEBP]);
+
+    $this->get(route('home'))->assertOk()
+        ->assertSee(Storage::disk('public')->url($settings->hero_images[0]), false)
+        ->assertSee(Storage::disk('public')->url($settings->hero_images[1]), false)
+        ->assertSee('hero-gallery-arrow-next', false)
+        ->assertSee('setInterval(() => next(), 5000)', false);
+
+    Livewire::actingAs($admin)->test(AdminStoreSettings::class)
+        ->call('removeHeroImage', 0)
+        ->call('save')
+        ->assertHasNoErrors();
+
+    expect($settings->fresh()->hero_images)->toBe([$settings->hero_images[1]])
+        ->and($settings->fresh()->hero_image_url)->toBe($settings->hero_images[1]);
+    Storage::disk('public')->assertMissing($settings->hero_images[0]);
+    Storage::disk('public')->assertExists($settings->hero_images[1]);
+
+    $this->get(route('home'))->assertOk()
+        ->assertSee(Storage::disk('public')->url($settings->hero_images[1]), false)
+        ->assertDontSee(Storage::disk('public')->url($settings->hero_images[0]), false)
+        ->assertDontSee('hero-gallery-arrow-next', false);
+});
+
+test('homepage displays uploaded hero images even when hero copy is empty', function () {
+    Cache::flush();
+    StoreSetting::factory()->create([
+        'hero_images' => ['site/homepage.webp'],
+        'hero_image_url' => 'site/homepage.webp',
+        'hero_title_ar' => null,
+        'hero_title_en' => null,
+    ]);
+
+    $this->get(route('home'))->assertOk()
+        ->assertSee('/storage/site/homepage.webp', false)
+        ->assertSee('class="hero-image is-active"', false)
+        ->assertDontSee('<h1>', false);
+});
+
+test('homepage view all expands categories in place and can collapse them again', function () {
+    Cache::flush();
+    foreach (range(1, 8) as $index) {
+        Category::factory()->create([
+            'name' => "Home Category {$index}",
+            'name_ar' => "Home Category {$index}",
+            'slug' => "home-category-{$index}",
+            'sort_order' => $index,
+        ]);
+    }
+
+    Livewire::test(HomePage::class)
+        ->assertSee('Home Category 6')
+        ->assertDontSee('Home Category 7')
+        ->assertSee('wire:click="toggleCategories"', false)
+        ->call('toggleCategories')
+        ->assertSet('showAllCategories', true)
+        ->assertSee('Home Category 7')
+        ->assertSee('Home Category 8')
+        ->assertSee('aria-expanded="true"', false)
+        ->call('toggleCategories')
+        ->assertSet('showAllCategories', false)
+        ->assertDontSee('Home Category 7');
 });
 
 test('admin dashboard separates confirmed revenue, delivered revenue, and returned order value', function () {

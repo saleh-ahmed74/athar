@@ -10,6 +10,8 @@ use Livewire\Component;
 
 class HomePage extends Component
 {
+    public bool $showAllCategories = false;
+
     public function boot(): void
     {
         $this->enableBackButtonCache();
@@ -35,12 +37,24 @@ class HomePage extends Component
         $this->dispatch('cart-updated', count: (int) collect($cart)->sum(), cart: $cart);
     }
 
+    public function toggleCategories(): void
+    {
+        $this->showAllCategories = ! $this->showAllCategories;
+    }
+
     public function render(): View
     {
+        $bestSellerProducts = Product::query()->where('is_active', true)->whereNull('archived_at')->where('is_bestseller', true)->whereHas('category', fn ($query) => $query->where('is_active', true)->whereNull('archived_at'))->latest('created_at')->latest('id')->limit(8)->get();
+        $homeProducts = $bestSellerProducts;
+        if ($homeProducts->isEmpty()) {
+            $homeProducts = Product::query()->where('is_active', true)->whereNull('archived_at')->whereHas('category', fn ($query) => $query->where('is_active', true)->whereNull('archived_at'))->latest('created_at')->latest('id')->limit(8)->get();
+        }
+
         return view('livewire.storefront.home-page', [
-            'categories' => Category::query()->where('is_active', true)->whereNull('archived_at')->with(['products' => fn ($query) => $query->where('is_active', true)->whereNull('archived_at')->whereNotNull('image_path')->limit(1)])->withCount(['products' => fn ($query) => $query->where('is_active', true)->whereNull('archived_at')])->orderBy('sort_order')->limit(6)->get(),
+            'categories' => Category::query()->where('is_active', true)->whereNull('archived_at')->with(['products' => fn ($query) => $query->where('is_active', true)->whereNull('archived_at')->whereNotNull('image_path')->limit(1)])->withCount(['products' => fn ($query) => $query->where('is_active', true)->whereNull('archived_at')])->orderBy('sort_order')->when(! $this->showAllCategories, fn ($query) => $query->limit(6))->get(),
             'settings' => StoreSetting::current(),
-            'featuredProducts' => Product::query()->where('is_active', true)->whereNull('archived_at')->whereHas('category', fn ($query) => $query->where('is_active', true)->whereNull('archived_at'))->latest('created_at')->latest('id')->limit(8)->get(),
+            'bestSellerProducts' => $bestSellerProducts,
+            'homeProducts' => $homeProducts,
         ])->layout('layouts.storefront', ['title' => __('Home')]);
     }
 }

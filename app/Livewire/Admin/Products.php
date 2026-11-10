@@ -53,6 +53,8 @@ class Products extends Component
 
     public bool $isFeatured = false;
 
+    public bool $isBestseller = false;
+
     /** @var list<string> */
     public array $existingImages = [];
 
@@ -88,6 +90,7 @@ class Products extends Component
         $this->stock = $product->stock;
         $this->isActive = $product->is_active;
         $this->isFeatured = $product->is_featured;
+        $this->isBestseller = $product->is_bestseller;
         $this->existingImages = array_values(array_filter(array_merge([$product->image_path], $product->gallery_paths ?? [])));
         $this->showForm = true;
         $this->dispatch('product-form-opened');
@@ -115,6 +118,7 @@ class Products extends Component
             'stock' => ['required', 'integer', 'min:0', 'max:1000000'],
             'isActive' => ['boolean'],
             'isFeatured' => ['boolean'],
+            'isBestseller' => ['boolean'],
             'existingImages' => ['array', 'max:10'],
             'existingImages.*' => ['string', 'max:255'],
             'newImages' => ['array', 'max:10'],
@@ -142,6 +146,7 @@ class Products extends Component
             'stock' => $validated['stock'],
             'is_active' => $validated['isActive'],
             'is_featured' => $validated['isFeatured'],
+            'is_bestseller' => $validated['isBestseller'],
             'image_path' => $imagePaths[0] ?? null,
             'gallery_paths' => array_slice($imagePaths, 1),
         ])->save();
@@ -221,7 +226,7 @@ class Products extends Component
 
     private function resetForm(): void
     {
-        $this->reset(['productId', 'categoryId', 'name', 'nameAr', 'sku', 'description', 'descriptionAr', 'price', 'compareAtPrice', 'stock', 'isActive', 'isFeatured', 'existingImages', 'newImages']);
+        $this->reset(['productId', 'categoryId', 'name', 'nameAr', 'sku', 'description', 'descriptionAr', 'price', 'compareAtPrice', 'stock', 'isActive', 'isFeatured', 'isBestseller', 'existingImages', 'newImages']);
         $this->categoryId = (int) Category::query()->where('is_active', true)->whereNull('archived_at')->orderBy('sort_order')->value('id');
         $this->isActive = true;
         $this->isFeatured = false;

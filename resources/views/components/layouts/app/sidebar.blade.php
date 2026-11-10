@@ -17,13 +17,13 @@
     <body class="account-app-shell">
         <header class="account-app-header">
             <div class="wrap account-app-header-inner">
-                <a class="account-app-brand" href="{{ route('home') }}" wire:navigate aria-label="{{ $storeName }}"><img src="{{ $storeLogo }}" alt="{{ $storeName }}"></a>
+                <a class="account-app-brand" href="{{ route('home', [], false) }}" wire:navigate aria-label="{{ $storeName }}"><img src="{{ $storeLogo }}" alt="{{ $storeName }}"></a>
                 <nav class="account-app-nav" aria-label="{{ __('Account navigation') }}">
                     <a href="{{ route('settings.profile') }}" wire:navigate @if(request()->routeIs('settings.profile', 'settings.password', 'settings.appearance')) aria-current="page" @endif>{{ __('My account') }}</a>
                     <a href="{{ route('account.orders') }}" wire:navigate @if(request()->routeIs('account.orders')) aria-current="page" @endif>{{ __('My orders') }}</a>
                     @if (auth()->user()->isAdmin())<a href="{{ route('admin.dashboard') }}" wire:navigate @if(request()->routeIs('admin.dashboard')) aria-current="page" @endif>{{ __('Admin dashboard') }}</a>@endif
                 </nav>
-                <div class="account-app-actions"><span class="account-app-user">{{ auth()->user()->name }}</span><a class="button secondary small" href="{{ route('home') }}" wire:navigate>{{ __('Back to store') }}</a><a class="cart-link account-cart-link" href="{{ route('cart') }}" wire:navigate><span class="cart-label">{{ __('Cart') }}</span><span>{{ collect(session('cart', []))->sum() }}</span></a><form method="POST" action="{{ route('logout') }}">@csrf<button class="account-sign-out" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"></path><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"></path></svg><span>{{ __('Log out') }}</span></button></form></div>
+                <div class="account-app-actions"><span class="account-app-user">{{ auth()->user()->name }}</span><a class="button secondary small" href="{{ route('home', [], false) }}" wire:navigate>{{ __('Back to store') }}</a><a class="cart-link account-cart-link" href="{{ route('cart') }}" wire:navigate><span class="cart-label">{{ __('Cart') }}</span><span>{{ collect(session('cart', []))->sum() }}</span></a><form method="POST" action="{{ route('logout') }}">@csrf<button class="account-sign-out" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"></path><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"></path></svg><span>{{ __('Log out') }}</span></button></form></div>
             </div>
         </header>
         <main class="wrap account-app-main">{{ $slot }}</main>

@@ -16,7 +16,7 @@
                 ['hero_eyebrow_en', __('Hero eyebrow (EN)'), 'text'], ['hero_eyebrow_ar', __('Hero eyebrow (AR)'), 'text'],
                 ['hero_title_en', __('Hero title (EN)'), 'textarea'], ['hero_title_ar', __('Hero title (AR)'), 'textarea'],
                 ['hero_text_en', __('Hero text (EN)'), 'textarea'], ['hero_text_ar', __('Hero text (AR)'), 'textarea'],
-                ['hero_cta_en', __('Hero button (EN)'), 'text'], ['hero_cta_ar', __('Hero button (AR)'), 'text'], ['hero_image_url', __('Hero image URL or file'), 'text'],
+                ['hero_cta_en', __('Hero button (EN)'), 'text'], ['hero_cta_ar', __('Hero button (AR)'), 'text'],
             ],
             __('Checkout') => [
                 ['payment_label_en', __('Payment method label (EN)'), 'text'], ['payment_label_ar', __('Payment method label (AR)'), 'text'],
@@ -82,15 +82,30 @@
                             <label class="upload-button" for="logo-file">{{ __('Upload logo image') }}</label><input class="visually-hidden" id="logo-file" type="file" accept="image/jpeg,image/png,image/webp" wire:model="logoFile">
                             @if ($logoFile && $logoFile->isPreviewable())<img class="settings-image-preview" src="{{ $logoFile->temporaryUrl() }}" alt="{{ __('Logo preview') }}">@elseif(\App\Models\StoreSetting::current()->imageUrl('logo_url'))<img class="settings-image-preview" src="{{ \App\Models\StoreSetting::current()->imageUrl('logo_url') }}" alt="{{ __('Current logo') }}">@endif
                             <span class="note">{{ __('Uploaded site images are stored under storage/app/public/site and referenced by the database.') }}</span>
-                        @elseif ($key === 'hero_image_url')
-                            <label class="upload-button" for="hero-file">{{ __('Upload homepage image') }}</label><input class="visually-hidden" id="hero-file" type="file" accept="image/jpeg,image/png,image/webp" wire:model="heroImageFile">
-                            @if ($heroImageFile && $heroImageFile->isPreviewable())<img class="settings-image-preview" src="{{ $heroImageFile->temporaryUrl() }}" alt="{{ __('Homepage image preview') }}">@elseif(\App\Models\StoreSetting::current()->imageUrl('hero_image_url'))<img class="settings-image-preview" src="{{ \App\Models\StoreSetting::current()->imageUrl('hero_image_url') }}" alt="{{ __('Current homepage image') }}">@endif
-                            <span class="note">{{ __('Uploaded site images are stored under storage/app/public/site and referenced by the database.') }}</span>
                         @endif
                         @error('form.'.$key)<span class="error">{{ $message }}</span>@enderror
                     </div>
                 @endforeach
             </div>
+            @if ($heading === __('Homepage hero'))
+                <div class="field hero-gallery-setting">
+                    <label>{{ __('Homepage gallery images') }}</label>
+                    <label class="upload-button" for="hero-images">{{ __('Upload homepage images') }}</label>
+                    <input class="visually-hidden" id="hero-images" type="file" accept="image/jpeg,image/png,image/webp" multiple wire:model="heroImageFiles">
+                    @error('heroImageFiles')<span class="error">{{ $message }}</span>@enderror @error('heroImageFiles.*')<span class="error">{{ $message }}</span>@enderror
+                    <div wire:loading wire:target="heroImageFiles">{{ __('Uploading image...') }}</div>
+                    <div class="hero-gallery-preview">
+                        @foreach ($form['hero_images'] as $index => $image)
+                            @php($previewUrl = filter_var($image, FILTER_VALIDATE_URL) ? $image : \Illuminate\Support\Facades\Storage::disk('public')->url(ltrim($image, '/')))
+                            <div class="hero-gallery-preview-item" wire:key="saved-hero-image-{{ $index }}"><img src="{{ $previewUrl }}" alt="{{ __('Homepage image preview') }}"><button type="button" class="button secondary small" wire:click="removeHeroImage({{ $index }})">{{ __('Remove image') }}</button></div>
+                        @endforeach
+                        @foreach ($heroImageFiles as $index => $image)
+                            <div class="hero-gallery-preview-item" wire:key="new-hero-image-{{ $index }}">@if ($image->isPreviewable())<img src="{{ $image->temporaryUrl() }}" alt="{{ __('Homepage image preview') }}">@endif<button type="button" class="button secondary small" wire:click="removeNewHeroImage({{ $index }})">{{ __('Remove image') }}</button></div>
+                        @endforeach
+                    </div>
+                    <span class="note">{{ __('Upload up to ten images. They rotate automatically on the homepage; swipe or use the arrow keys to move between them.') }}</span>
+                </div>
+            @endif
         @endforeach
         <button class="button" type="submit" wire:loading.attr="disabled" wire:target="save">{{ __('Save settings') }}</button>
     </form>
