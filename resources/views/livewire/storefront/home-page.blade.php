@@ -26,7 +26,7 @@
     @if ($categories->isNotEmpty())
         <div class="home-category-section">
         <div class="section-head"><h2>{{ $settings->localized('categories_heading') }}</h2><button class="text-link home-view-categories" type="button" wire:click="toggleCategories" aria-expanded="{{ $showAllCategories ? 'true' : 'false' }}">{{ $showAllCategories ? __('Show less') : __('View all') }}</button></div>
-        <div class="category-grid">
+        <div class="category-grid {{ $showAllCategories ? 'is-expanded' : 'is-collapsed' }}">
             @foreach ($categories as $category)
                 <a class="category-tile" href="{{ route('category.show', $category->slug) }}" wire:navigate>
                     @php($categoryImage = $category->image_path ?: $category->products->first()?->image_path)
