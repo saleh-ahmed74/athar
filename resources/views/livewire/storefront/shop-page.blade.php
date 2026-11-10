@@ -27,7 +27,7 @@
             @foreach ($categories as $category)
                 @php($categoryImage = $category->image_path ?: $category->products->first()?->image_path)
                 <a class="shop-category-chip{{ $selectedCategory?->slug === $category->slug ? ' is-active' : '' }}" href="{{ route('category.show', $category->slug) }}" wire:navigate @if($selectedCategory?->slug === $category->slug) aria-current="page" @endif>
-                    <span class="shop-category-image">@if($categoryImage)<img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($categoryImage) }}" alt="" loading="lazy">@else<span aria-hidden="true">{{ mb_substr(app()->isLocale('ar') ? ($category->name_ar ?: $category->name) : $category->name, 0, 1) }}</span>@endif</span>
+                    <span class="shop-category-image">@if($categoryImage)<img src="{{ '/storage/'.ltrim($categoryImage, '/') }}" alt="" loading="lazy">@else<span aria-hidden="true">{{ mb_substr(app()->isLocale('ar') ? ($category->name_ar ?: $category->name) : $category->name, 0, 1) }}</span>@endif</span>
                     <span>{{ app()->isLocale('ar') ? ($category->name_ar ?: $category->name) : $category->name }}</span>
                 </a>
             @endforeach

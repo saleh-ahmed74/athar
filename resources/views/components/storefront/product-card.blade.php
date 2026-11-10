@@ -1,12 +1,10 @@
 @props(['product', 'priority' => false])
 @php
-    /** @var \Illuminate\Filesystem\FilesystemAdapter $publicStorage */
-    $publicStorage = \Illuminate\Support\Facades\Storage::disk('public');
 @endphp
 <article class="product-card">
     <a class="product-image" href="{{ route('product.show', $product->slug) }}" wire:navigate>
         @if ($product->image_path)
-            <img src="{{ $publicStorage->url($product->image_path) }}"
+            <img src="{{ '/storage/'.ltrim($product->image_path, '/') }}"
                 alt="{{ app()->isLocale('ar') ? ($product->name_ar ?: $product->name) : $product->name }}" @if ($priority) fetchpriority="high" loading="eager" @else loading="lazy" @endif>
         @else
             <span

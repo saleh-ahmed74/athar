@@ -15,7 +15,7 @@
             <tr>
                 <td data-label="{{ __('Order number') }}"><div class="admin-order-cell">
                     @php($firstProductImage = $order->items->first()?->product?->image_path)
-                    <a class="admin-order-image-link" href="{{ route('admin.orders.show', $order) }}" wire:navigate aria-label="{{ __('View order details for :number', ['number' => $order->order_number]) }}">@if ($firstProductImage)<img class="admin-thumb" src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($firstProductImage) }}" alt="">@else<span class="admin-thumb image-placeholder">A</span>@endif</a>
+                    <a class="admin-order-image-link" href="{{ route('admin.orders.show', $order) }}" wire:navigate aria-label="{{ __('View order details for :number', ['number' => $order->order_number]) }}">@if ($firstProductImage)<img class="admin-thumb" src="{{ '/storage/'.ltrim($firstProductImage, '/') }}" alt="">@else<span class="admin-thumb image-placeholder">A</span>@endif</a>
                     <div><strong>{{ $order->order_number }}</strong><span class="note">{{ $order->created_at->format('d M Y') }}</span></div>
                 </div></td>
                 <td data-label="{{ __('Customer') }}"><div class="order-customer-cell"><strong>{{ $order->customer_name }}</strong><span class="note">{{ $order->city }}</span></div></td>
@@ -27,7 +27,7 @@
                     <span class="note"><bdi>{{ $order->phone }}</bdi></span>
                 </td>
                 <td data-label="{{ __('Date') }}">{{ $order->created_at->format('d M Y') }}</td>
-                <td data-label="{{ __('Items') }}"><div class="order-items-preview">@foreach ($order->items->take(2) as $item)<span>@if($item->product?->image_path)<img class="mini-thumb" src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($item->product->image_path) }}" alt="">@endif{{ $item->product_name }} × {{ $item->quantity }}</span>@endforeach@if($order->items_count > 2)<span class="note">+{{ $order->items_count - 2 }} {{ __('more') }}</span>@endif</div></td>
+                <td data-label="{{ __('Items') }}"><div class="order-items-preview">@foreach ($order->items->take(2) as $item)<span>@if($item->product?->image_path)<img class="mini-thumb" src="{{ '/storage/'.ltrim($item->product->image_path, '/') }}" alt="">@endif{{ $item->product_name }} × {{ $item->quantity }}</span>@endforeach@if($order->items_count > 2)<span class="note">+{{ $order->items_count - 2 }} {{ __('more') }}</span>@endif</div></td>
                 <td data-label="{{ __('Total') }}"><strong>{{ number_format((float) $order->total, 2) }} {{ \App\Models\StoreSetting::current()->currency_symbol }}</strong></td>
                 <td data-label="{{ __('Status') }}" @class(['status-returning' => ($statusChoices[$order->id] ?? $order->status) === 'returned'])>
                     @php($currentStatus = $order->status === 'processing' ? 'confirmed' : $order->status)

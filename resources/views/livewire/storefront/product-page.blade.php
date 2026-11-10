@@ -8,7 +8,7 @@
                     x-on:touchend="let deltaX = $event.changedTouches[0].clientX - touchStartX; let deltaY = $event.changedTouches[0].clientY - touchStartY; if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) { $wire.call(deltaX < 0 ? 'nextImage' : 'previousImage') }"
                     x-on:keydown.left.prevent="$wire.previousImage()" x-on:keydown.right.prevent="$wire.nextImage()">
                     @foreach ($productImages as $index => $imagePath)
-                        <figure @class(['detail-image', 'is-hidden' => $activeImageIndex !== $index]) id="product-photo-{{ $product->id }}-{{ $index }}" aria-hidden="{{ $activeImageIndex !== $index ? 'true' : 'false' }}"><img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($imagePath) }}" alt="{{ app()->isLocale('ar') ? ($product->name_ar ?: $product->name) : $product->name }} — {{ $index + 1 }}"></figure>
+                        <figure @class(['detail-image', 'is-hidden' => $activeImageIndex !== $index]) id="product-photo-{{ $product->id }}-{{ $index }}" aria-hidden="{{ $activeImageIndex !== $index ? 'true' : 'false' }}"><img src="{{ '/storage/'.ltrim($imagePath, '/') }}" alt="{{ app()->isLocale('ar') ? ($product->name_ar ?: $product->name) : $product->name }} — {{ $index + 1 }}"></figure>
                     @endforeach
                     @if (count($productImages) > 1)
                         <button class="gallery-arrow gallery-arrow-previous" type="button" wire:click="previousImage" aria-label="{{ __('Previous photo') }}">‹</button>
@@ -19,7 +19,7 @@
                 @if (count($productImages) > 1)
                     <nav class="gallery-thumbnails" aria-label="{{ __('Choose a product photo') }}">
                         @foreach ($productImages as $index => $imagePath)
-                            <button type="button" wire:click="selectImage({{ $index }})" aria-label="{{ __('Show photo') }} {{ $index + 1 }}" @class(['is-selected' => $activeImageIndex === $index])><img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($imagePath) }}" alt="{{ app()->isLocale('ar') ? ($product->name_ar ?: $product->name) : $product->name }} — {{ $index + 1 }}"></button>
+                            <button type="button" wire:click="selectImage({{ $index }})" aria-label="{{ __('Show photo') }} {{ $index + 1 }}" @class(['is-selected' => $activeImageIndex === $index])><img src="{{ '/storage/'.ltrim($imagePath, '/') }}" alt="{{ app()->isLocale('ar') ? ($product->name_ar ?: $product->name) : $product->name }} — {{ $index + 1 }}"></button>
                         @endforeach
                     </nav>
                 @endif
