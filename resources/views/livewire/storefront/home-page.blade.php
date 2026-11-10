@@ -40,7 +40,7 @@
 
     @if ($homeProducts->isNotEmpty())
         <div class="section-head"><h2>{{ $bestSellerProducts->isNotEmpty() ? __('Best sellers') : ($settings->localized('featured_heading') ?: __('Newest')) }}</h2><a class="text-link" href="{{ $bestSellerProducts->isNotEmpty() ? route('shop', ['highlight' => 'bestseller']) : route('shop') }}" wire:navigate>{{ __('View all') }}</a></div>
-        <div class="product-grid">
+        <div class="product-grid home-product-grid">
             @foreach ($homeProducts as $product)
                 <article class="home-product-item" wire:key="home-product-{{ $product->id }}">
                     <x-storefront.product-card :product="$product" />
