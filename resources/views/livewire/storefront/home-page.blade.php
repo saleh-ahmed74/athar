@@ -8,19 +8,21 @@
                 <button class="hero-gallery-arrow hero-gallery-arrow-previous" type="button" x-on:click.stop="previous()" aria-label="{{ __('Previous photo') }}">‹</button>
                 <button class="hero-gallery-arrow hero-gallery-arrow-next" type="button" x-on:click.stop="next()" aria-label="{{ __('Next photo') }}">›</button>
             @endif
-            @if ($settings->localized('hero_eyebrow') || $settings->localized('hero_title') || $settings->localized('hero_text') || $settings->localized('hero_cta'))
+            @if ($settings->localized('hero_eyebrow') || $settings->localized('hero_title') || $settings->localized('hero_text'))
             <div class="hero-copy-panel">
                 <div class="hero-content" x-show="copyOpen" x-transition>
-                    <button class="hero-content-close" type="button" x-on:click.stop="copyOpen = false" aria-label="{{ __('Close hero text') }}">×</button>
+                    <button class="hero-content-toggle" type="button" x-on:click.stop="copyOpen = false" aria-label="{{ __('Close hero text') }}" title="{{ __('Close hero text') }}">−</button>
                     @if ($settings->localized('hero_eyebrow'))<span class="hero-eyebrow">{{ $settings->localized('hero_eyebrow') }}</span>@endif
                     @if ($settings->localized('hero_title'))<h1>{{ $settings->localized('hero_title') }}</h1>@endif
                     @if ($settings->localized('hero_text'))<p>{{ $settings->localized('hero_text') }}</p>@endif
-                    @if ($settings->localized('hero_cta'))<a class="button" href="{{ route('shop') }}" wire:navigate>{{ $settings->localized('hero_cta') }}</a>@endif
                 </div>
-                <button class="hero-copy-reopen" type="button" x-show="!copyOpen" x-transition x-on:click.stop="copyOpen = true">{{ __('Show hero text') }}</button>
+                <button class="hero-copy-reopen" type="button" x-show="!copyOpen" x-transition x-on:click.stop="copyOpen = true" aria-label="{{ __('Show hero text') }}" title="{{ __('Show hero text') }}">−</button>
             </div>
             @endif
         </div>
+        @if ($settings->localized('hero_cta'))
+            <div class="hero-cta-row"><a class="button" href="{{ route('shop') }}" wire:navigate>{{ $settings->localized('hero_cta') }}</a></div>
+        @endif
     @endif
 
     @if ($categories->isNotEmpty())
@@ -30,7 +32,7 @@
             @foreach ($categories as $category)
                 <a class="category-tile" href="{{ route('category.show', $category->slug) }}" wire:navigate>
                     @php($categoryImage = $category->image_path ?: $category->products->first()?->image_path)
-                    @if ($categoryImage)<img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($categoryImage) }}" alt="" loading="lazy">@else<span class="category-placeholder" aria-hidden="true">{{ mb_substr(app()->isLocale('ar') ? ($category->name_ar ?: $category->name) : $category->name, 0, 1) }}</span>@endif
+                    @if ($categoryImage)<img src="{{ '/storage/'.ltrim($categoryImage, '/') }}" alt="" loading="lazy">@else<span class="category-placeholder" aria-hidden="true">{{ mb_substr(app()->isLocale('ar') ? ($category->name_ar ?: $category->name) : $category->name, 0, 1) }}</span>@endif
                     <span>{{ app()->isLocale('ar') ? ($category->name_ar ?: $category->name) : $category->name }}</span>
                 </a>
             @endforeach

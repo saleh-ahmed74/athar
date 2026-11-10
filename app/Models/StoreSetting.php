@@ -6,7 +6,6 @@ use Database\Factories\StoreSettingFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Storage;
 
 class StoreSetting extends Model
 {
@@ -51,7 +50,7 @@ class StoreSetting extends Model
             return in_array(parse_url($value, PHP_URL_SCHEME), ['http', 'https'], true) ? $value : null;
         }
 
-        return Storage::disk('public')->url(ltrim((string) $value, '/'));
+        return '/storage/'.ltrim((string) $value, '/');
     }
 
     /** @return list<string> */
@@ -71,7 +70,7 @@ class StoreSetting extends Model
                 return in_array(parse_url($image, PHP_URL_SCHEME), ['https', 'http'], true) ? $image : null;
             }
 
-            return Storage::disk('public')->url(ltrim($image, '/'));
+            return '/storage/'.ltrim($image, '/');
         }, $images)));
     }
 }

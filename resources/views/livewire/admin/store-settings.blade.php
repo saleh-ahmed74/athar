@@ -96,7 +96,7 @@
                     <div wire:loading wire:target="heroImageFiles">{{ __('Uploading image...') }}</div>
                     <div class="hero-gallery-preview">
                         @foreach ($form['hero_images'] as $index => $image)
-                            @php($previewUrl = filter_var($image, FILTER_VALIDATE_URL) ? $image : \Illuminate\Support\Facades\Storage::disk('public')->url(ltrim($image, '/')))
+                            @php($previewUrl = filter_var($image, FILTER_VALIDATE_URL) ? $image : '/storage/'.ltrim($image, '/'))
                             <div class="hero-gallery-preview-item" wire:key="saved-hero-image-{{ $index }}"><img src="{{ $previewUrl }}" alt="{{ __('Homepage image preview') }}"><button type="button" class="button secondary small" wire:click="removeHeroImage({{ $index }})">{{ __('Remove image') }}</button></div>
                         @endforeach
                         @foreach ($heroImageFiles as $index => $image)
