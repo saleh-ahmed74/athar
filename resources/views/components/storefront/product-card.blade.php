@@ -1,5 +1,6 @@
 @props(['product', 'priority' => false])
 @php
+    $displayPrice = (float) $product->price;
 @endphp
 <article class="product-card">
     <a class="product-image" href="{{ route('product.show', $product->slug) }}" wire:navigate>
@@ -17,7 +18,7 @@
     <div class="product-info">
         <a class="product-name" href="{{ route('product.show', $product->slug) }}"
             wire:navigate>{{ app()->isLocale('ar') ? ($product->name_ar ?: $product->name) : $product->name }}</a>
-        <div class="product-price"><strong>{{ number_format((float) $product->price, 2) }}
+        <div class="product-price"><strong>{{ number_format($displayPrice, 2) }}
                 {{ \App\Models\StoreSetting::current()->currency_symbol }}</strong>
             @if ($product->compare_at_price && $product->compare_at_price > $product->price)<s>{{ number_format((float) $product->compare_at_price, 2) }}
             {{ \App\Models\StoreSetting::current()->currency_symbol }}</s>@endif

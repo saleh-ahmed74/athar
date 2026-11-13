@@ -120,11 +120,12 @@ class ShopPage extends Component
     {
         $product = Product::query()->where('is_active', true)->whereNull('archived_at')->findOrFail($productId);
         abort_unless($product->category?->is_active && ! $product->category?->archived_at, 404);
+        abort_if($product->hasOptions(), 409);
         $trackStock = (bool) StoreSetting::current()->track_stock;
         abort_if($trackStock && $product->stock < 1, 409);
 
         $cart = session('cart', []);
-        $maximum = $trackStock ? $product->stock : 99;
+        $maximum = min(10, $trackStock ? $product->stock : 99);
         $cart[$product->id] = min((int) ($cart[$product->id] ?? 0) + 1, $maximum);
         session()->put('cart', $cart);
         $this->dispatch('cart-updated', count: (int) collect($cart)->sum(), cart: $cart);

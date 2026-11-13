@@ -39,21 +39,28 @@ class CartRecoveryController
         if ($request->boolean('offline_sync') || ($cart === [] && ($validated['cart'] ?? []) !== [])) {
             $settings = StoreSetting::current();
             $browserCart = $validated['cart'] ?? [];
+            $productIds = array_values(array_unique(array_map(fn ($key): int => $this->parseCartKey((string) $key)[0], array_keys($browserCart))));
             $products = Product::query()
                 ->where('is_active', true)
                 ->whereNull('archived_at')
                 ->whereHas('category', fn ($query) => $query->where('is_active', true)->whereNull('archived_at'))
-                ->whereIn('id', array_map('intval', array_keys($browserCart)))
-                ->get(['id', 'stock'])
+                ->whereIn('id', $productIds)
+                ->get(['id', 'stock', 'colors', 'sizes'])
                 ->keyBy('id');
 
             $restoredCart = [];
             foreach ($browserCart as $id => $quantity) {
-                $product = $products->get((int) $id);
+                [$productId, $colorId, $sizeId] = $this->parseCartKey((string) $id);
+                $product = $products->get($productId);
                 if (! $product || ($settings->track_stock && $product->stock < 1)) {
                     continue;
                 }
-                $restoredCart[(int) $id] = $settings->track_stock ? min((int) $quantity, $product->stock) : (int) $quantity;
+                $hasOptions = ($product->colors ?? []) !== [] || ($product->sizes ?? []) !== [];
+                $option = $hasOptions ? $product->optionCombination($colorId, $sizeId) : null;
+                if (($hasOptions && ! $option) || (! $hasOptions && ($colorId !== null || $sizeId !== null))) {
+                    continue;
+                }
+                $restoredCart[(string) $id] = $settings->track_stock ? min((int) $quantity, $product->stock) : (int) $quantity;
             }
             $cart = $restoredCart;
             session()->put('cart', $cart);
@@ -70,5 +77,19 @@ class CartRecoveryController
             'count' => (int) collect($cart)->sum(),
             'checkout_token' => $token,
         ]);
+    }
+
+    /** @return array{int, ?string, ?string} */
+    private function parseCartKey(string $key): array
+    {
+        if (preg_match('/^(\d+)(?::([0-9a-f-]{36}|-):([0-9a-f-]{36}|-))?$/i', $key, $matches) === 1) {
+            return [(int) $matches[1], ($matches[2] ?? '-') !== '-' ? $matches[2] : null, ($matches[3] ?? '-') !== '-' ? $matches[3] : null];
+        }
+
+        if (preg_match('/^(\d+)$/', $key, $matches) === 1) {
+            return [(int) $matches[1], null, null];
+        }
+
+        return [0, null, null];
     }
 }

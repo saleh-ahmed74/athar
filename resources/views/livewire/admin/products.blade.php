@@ -1,6 +1,6 @@
-<section x-data x-on:product-form-opened.window="setTimeout(() => document.getElementById('product-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)">
+<section x-data x-on:product-form-opened.window="setTimeout(() => document.getElementById('product-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)" x-on:product-option-added.window="$nextTick(() => { const row = [...$el.querySelectorAll('[data-product-option-row]')].at(-1); row?.scrollIntoView({ behavior: 'smooth', block: 'center' }); row?.querySelector('input:not([type=color])')?.focus({ preventScroll: true }) })" x-on:product-images-uploaded.window="$nextTick(() => setTimeout(() => document.getElementById('product-options')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150))">
     <div class="admin-heading"><h1>{{ $showArchived ? __('Archived products') : __('Products') }}</h1><div class="table-actions"><button class="button archive-toggle small" wire:click="toggleArchiveView" aria-label="{{ $showArchived ? __('Return to active products') : __('Open archived products') }}">{{ $showArchived ? __('Active products') : __('Archive') }} <span class="archive-count">{{ $archivedProductCount }}</span></button>@unless($showArchived)<button class="button small" wire:click="createProduct">{{ __('Add product') }}</button>@endunless</div></div>
-    @if (session('status'))<p class="status-message">{{ session('status') }}</p>@endif
+    @if (session('status'))<p class="status-message" x-data="{ visible: true }" x-init="setTimeout(() => visible = false, 2000)" x-show="visible"><span>{{ session('status') }}</span><button type="button" class="admin-toast-close" x-on:click="visible = false" aria-label="{{ __('Close') }}">×</button></p>@endif
     @if ($showForm)
         <form id="product-editor" class="admin-card admin-form" wire:submit="saveProduct">
             <h2>{{ $productId ? __('Edit product') : __('Add product') }}</h2>
@@ -9,6 +9,30 @@
             <div class="form-grid"><div class="field"><label>{{ __('Category') }}</label><select wire:model="categoryId"><option value="">{{ __('Choose a category') }}</option>@foreach ($categories as $category)<option value="{{ $category->id }}">{{ $category->name }}</option>@endforeach</select>@error('categoryId')<span class="error">{{ $message }}</span>@enderror</div><div class="field"><label>SKU</label><input wire:model="sku">@error('sku')<span class="error">{{ $message }}</span>@enderror</div></div>
             <div class="form-grid"><div class="field"><label>{{ __('Price') }} ({{ \App\Models\StoreSetting::current()->currency_symbol }})</label><input type="number" min="0.01" step="0.01" wire:model="price">@error('price')<span class="error">{{ $message }}</span>@enderror</div><div class="field"><label>{{ __('Compare at price') }}</label><input type="number" min="0.01" step="0.01" wire:model="compareAtPrice">@error('compareAtPrice')<span class="error">{{ $message }}</span>@enderror</div>@if ($trackStock)<div class="field"><label>{{ __('Stock') }}</label><input type="number" min="0" wire:model="stock">@error('stock')<span class="error">{{ $message }}</span>@enderror</div>@endif</div>
             <div class="form-grid"><div class="field"><label>{{ __('Description') }} (EN)</label><textarea rows="3" wire:model="description"></textarea>@error('description')<span class="error">{{ $message }}</span>@enderror</div><div class="field"><label>{{ __('Description') }} (AR)</label><textarea dir="rtl" rows="3" wire:model="descriptionAr"></textarea>@error('descriptionAr')<span class="error">{{ $message }}</span>@enderror</div></div>
+            <fieldset id="product-options" class="variant-editor"><legend>{{ __('Product options') }}</legend>
+                <fieldset class="product-option-group"><legend>{{ __('Colors') }}</legend>
+                    @foreach ($colorOptions as $index => $color)
+                        <div class="variant-editor-row" data-product-option-row wire:key="color-option-{{ $color['id'] ?? $index }}">
+                            <div class="field"><label>{{ __('Color') }} (EN)</label><input wire:model="colorOptions.{{ $index }}.color_en" placeholder="Olive">@error("colorOptions.$index.color_en")<span class="error">{{ $message }}</span>@enderror</div>
+                            <div class="field"><label>{{ __('Color') }} (AR)</label><input dir="rtl" wire:model="colorOptions.{{ $index }}.color_ar" placeholder="زيتي">@error("colorOptions.$index.color_ar")<span class="error">{{ $message }}</span>@enderror</div>
+                            <div class="field"><label>{{ __('Color swatch') }}</label><input type="color" wire:model="colorOptions.{{ $index }}.color_hex"></div>
+                            <div class="field"><label>{{ __('Color image') }}</label><select wire:model="colorOptions.{{ $index }}.image_path"><option value="">{{ __('Use product image') }}</option>@foreach ($existingImages as $image)<option value="{{ $image }}">{{ basename($image) }}</option>@endforeach</select><small>{{ __('Optional: show this photo when customers choose this color.') }}</small></div>
+                            <button class="danger-button" type="button" wire:click="removeColorOption({{ $index }})">{{ __('Remove') }}</button>
+                        </div>
+                    @endforeach
+                    <button class="button secondary small" type="button" wire:click="addColorOption">{{ __('Add color') }}</button>
+                </fieldset>
+                <fieldset class="product-option-group"><legend>{{ __('Sizes') }}</legend>
+                    @foreach ($sizeOptions as $index => $size)
+                        <div class="variant-editor-row" data-product-option-row wire:key="size-option-{{ $size['id'] ?? $index }}">
+                            <div class="field"><label>{{ __('Size') }} (EN)</label><input wire:model="sizeOptions.{{ $index }}.size_en" placeholder="Large">@error("sizeOptions.$index.size_en")<span class="error">{{ $message }}</span>@enderror</div>
+                            <div class="field"><label>{{ __('Size') }} (AR)</label><input dir="rtl" wire:model="sizeOptions.{{ $index }}.size_ar" placeholder="كبير">@error("sizeOptions.$index.size_ar")<span class="error">{{ $message }}</span>@enderror</div>
+                            <button class="danger-button" type="button" wire:click="removeSizeOption({{ $index }})">{{ __('Remove') }}</button>
+                        </div>
+                    @endforeach
+                    <button class="button secondary small" type="button" wire:click="addSizeOption">{{ __('Add size') }}</button>
+                </fieldset>
+            </fieldset>
             <div class="field"><label>{{ __('Product photos') }} ({{ __('Choose up to ten photos, 4 MB each') }})</label><label class="upload-button" for="product-images">{{ __('Choose product photos') }}</label><input class="visually-hidden" id="product-images" type="file" accept="image/jpeg,image/png,image/webp" multiple wire:model="newImages">@error('newImages')<span class="error">{{ $message }}</span>@enderror @error('newImages.*')<span class="error">{{ $message }}</span>@enderror<div wire:loading wire:target="newImages">{{ __('Uploading image...') }}</div>
                 <div class="gallery-thumbnails">@foreach ($existingImages as $index => $path)<div><img src="{{ '/storage/'.ltrim($path, '/') }}" alt="{{ __('Product photo') }}"><button class="button small remove-photo-button" type="button" wire:click="removeExistingImage({{ $index }})">{{ __('Remove photo') }}</button></div>@endforeach @foreach ($newImages as $index => $image)<div>@if ($image->isPreviewable())<img src="{{ $image->temporaryUrl() }}" alt="{{ __('Preview') }}">@endif<button class="button small remove-photo-button" type="button" wire:click="removeNewImage({{ $index }})">{{ __('Remove photo') }}</button></div>@endforeach</div>
             </div>

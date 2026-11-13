@@ -149,14 +149,14 @@ const handleOfflineCartClick = event => {
     event.stopImmediatePropagation();
     const cart = readOfflineCart();
     const productId = String(target.dataset.offlineAddToCart || target.dataset.productId || '');
-    if (!/^\d+$/.test(productId)) return;
+    if (!/^\d+(?::(?:[0-9a-f-]{36}|-):(?:[0-9a-f-]{36}|-)|:[0-9a-f-]{36})?$/i.test(productId)) return;
     if (target.hasAttribute('data-offline-add-to-cart')) {
         const quantityInput = target.closest('.product-detail')?.querySelector('[data-offline-add-quantity]');
-        const quantity = Math.max(1, Math.min(99, Number(quantityInput?.value || 1)));
-        cart[productId] = Math.min(99, Number(cart[productId] || 0) + quantity);
+        const quantity = Math.max(1, Math.min(10, Number(quantityInput?.value || 1)));
+        cart[productId] = Math.min(10, Number(cart[productId] || 0) + quantity);
         window.captureCartOrigin(target);
     } else if (target.dataset.offlineCartAction === 'increase') {
-        cart[productId] = Math.min(99, Number(cart[productId] || 0) + 1);
+        cart[productId] = Math.min(10, Number(cart[productId] || 0) + 1);
     } else if (target.dataset.offlineCartAction === 'decrease') {
         const quantity = Number(cart[productId] || 0) - 1;
         if (quantity > 0) cart[productId] = quantity;

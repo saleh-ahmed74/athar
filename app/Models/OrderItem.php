@@ -13,12 +13,12 @@ class OrderItem extends Model
     use HasFactory;
 
     /** @var list<string> */
-    protected $fillable = ['order_id', 'product_id', 'product_name', 'sku', 'unit_price', 'quantity', 'line_total'];
+    protected $fillable = ['order_id', 'product_id', 'product_name', 'sku', 'unit_price', 'quantity', 'line_total', 'variant_snapshot'];
 
     /** @return array<string, string> */
     protected function casts(): array
     {
-        return ['unit_price' => 'decimal:2', 'line_total' => 'decimal:2', 'quantity' => 'integer'];
+        return ['unit_price' => 'decimal:2', 'line_total' => 'decimal:2', 'quantity' => 'integer', 'variant_snapshot' => 'array'];
     }
 
     /** @return BelongsTo<Order, $this> */

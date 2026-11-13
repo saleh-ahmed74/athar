@@ -1,6 +1,6 @@
 @php($storeSetting = \App\Models\StoreSetting::current())
 @php($storeName = $storeSetting->store_name ?: config('app.name'))
-@php($storeLogo = $storeSetting->imageUrl('logo_url') ?: asset('images/athar-logo.png'))
+@php($storeLogo = asset('images/athar-logo.webp?v=20261113'))
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->isLocale('ar') ? 'rtl' : 'ltr' }}">
     <head>

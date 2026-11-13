@@ -1,5 +1,5 @@
-const PAGE_CACHE = 'athar-offline-pages-v1';
-const ASSET_CACHE = 'athar-offline-assets-v1';
+const PAGE_CACHE = 'athar-offline-pages-v2';
+const ASSET_CACHE = 'athar-offline-assets-v2';
 const OFFLINE_PAGE = '/offline.html';
 const MAX_PAGES = 30;
 const MAX_ASSETS = 100;
