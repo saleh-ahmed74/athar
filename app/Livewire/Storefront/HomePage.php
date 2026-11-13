@@ -24,11 +24,12 @@ class HomePage extends Component
             ->whereNull('archived_at')
             ->whereHas('category', fn ($query) => $query->where('is_active', true)->whereNull('archived_at'))
             ->findOrFail($productId);
+        abort_if($product->hasOptions(), 409);
 
         $trackStock = (bool) StoreSetting::current()->track_stock;
         abort_if($trackStock && $product->stock < 1, 409);
 
-        $maximum = $trackStock ? $product->stock : 99;
+        $maximum = min(10, $trackStock ? $product->stock : 99);
         $cart = session('cart', []);
         $cart[$product->id] = min((int) ($cart[$product->id] ?? 0) + 1, $maximum);
         session()->put('cart', $cart);

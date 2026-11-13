@@ -55,6 +55,12 @@ class Products extends Component
 
     public bool $isBestseller = false;
 
+    /** @var list<array{color_en: string, color_ar: string, color_hex: string, image_path: string}> */
+    public array $colorOptions = [];
+
+    /** @var list<array{size_en: string, size_ar: string}> */
+    public array $sizeOptions = [];
+
     /** @var list<string> */
     public array $existingImages = [];
 
@@ -91,6 +97,8 @@ class Products extends Component
         $this->isActive = $product->is_active;
         $this->isFeatured = $product->is_featured;
         $this->isBestseller = $product->is_bestseller;
+        $this->colorOptions = $product->colors ?? [];
+        $this->sizeOptions = $product->sizes ?? [];
         $this->existingImages = array_values(array_filter(array_merge([$product->image_path], $product->gallery_paths ?? [])));
         $this->showForm = true;
         $this->dispatch('product-form-opened');
@@ -123,6 +131,16 @@ class Products extends Component
             'existingImages.*' => ['string', 'max:255'],
             'newImages' => ['array', 'max:10'],
             'newImages.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'extensions:jpg,jpeg,png,webp', 'max:4096'],
+            'colorOptions' => ['array', 'max:100'],
+            'colorOptions.*.id' => ['nullable', 'uuid'],
+            'colorOptions.*.color_en' => ['nullable', 'string', 'max:80'],
+            'colorOptions.*.color_ar' => ['nullable', 'string', 'max:80'],
+            'colorOptions.*.color_hex' => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
+            'colorOptions.*.image_path' => ['nullable', 'string', 'max:255'],
+            'sizeOptions' => ['array', 'max:100'],
+            'sizeOptions.*.id' => ['nullable', 'uuid'],
+            'sizeOptions.*.size_en' => ['nullable', 'string', 'max:80'],
+            'sizeOptions.*.size_ar' => ['nullable', 'string', 'max:80'],
         ]);
         if (count($this->existingImages) + count($this->newImages) > 10) {
             throw ValidationException::withMessages(['newImages' => __('Products can have up to ten photos.')]);
@@ -133,6 +151,26 @@ class Products extends Component
         $retainedImages = array_values(array_intersect($this->existingImages, $oldImages));
         $uploadedImages = array_map(fn ($image): string => ImageUploadProcessor::store($image, 'products', 1600, 1600, 82), $this->newImages);
         $imagePaths = array_values(array_merge($retainedImages, $uploadedImages));
+        $colors = collect($validated['colorOptions'])->filter(fn (array $color): bool => filled($color['color_en'] ?? null) || filled($color['color_ar'] ?? null))
+            ->map(function (array $color) use ($imagePaths): array {
+                $english = trim((string) ($color['color_en'] ?? ''));
+                $arabic = trim((string) ($color['color_ar'] ?? ''));
+
+                return [
+                    'id' => $color['id'] ?? (string) Str::uuid(),
+                    'color_en' => $english ?: $arabic,
+                    'color_ar' => $arabic ?: $english,
+                    'color_hex' => $color['color_hex'] ?? '#000000',
+                    'image_path' => in_array($color['image_path'] ?? '', $imagePaths, true) ? $color['image_path'] : null,
+                ];
+            })->values()->all();
+        $sizes = collect($validated['sizeOptions'])->filter(fn (array $size): bool => filled($size['size_en'] ?? null) || filled($size['size_ar'] ?? null))
+            ->map(function (array $size): array {
+                $english = trim((string) ($size['size_en'] ?? ''));
+                $arabic = trim((string) ($size['size_ar'] ?? ''));
+
+                return ['id' => $size['id'] ?? (string) Str::uuid(), 'size_en' => $english ?: $arabic, 'size_ar' => $arabic ?: $english];
+            })->values()->all();
         $product->fill([
             'category_id' => $validated['categoryId'],
             'name' => trim($validated['name']),
@@ -149,12 +187,18 @@ class Products extends Component
             'is_bestseller' => $validated['isBestseller'],
             'image_path' => $imagePaths[0] ?? null,
             'gallery_paths' => array_slice($imagePaths, 1),
+            'colors' => $colors ?: null,
+            'sizes' => $sizes ?: null,
         ])->save();
 
         Storage::disk('public')->delete(array_values(array_diff($oldImages, $imagePaths)));
-
-        $this->resetForm();
-        session()->flash('status', __('Product saved.'));
+        $this->productId = $product->id;
+        $this->existingImages = $imagePaths;
+        $this->newImages = [];
+        $this->colorOptions = $colors;
+        $this->sizeOptions = $sizes;
+        $this->dispatch('admin-toast', message: __('Product saved.'));
+        $this->resetValidation();
     }
 
     public function deleteProduct(int $id): void
@@ -211,6 +255,35 @@ class Products extends Component
         $this->newImages = array_values($this->newImages);
     }
 
+    public function updatedNewImages(): void
+    {
+        $this->dispatch('product-images-uploaded');
+    }
+
+    public function addColorOption(): void
+    {
+        $this->colorOptions[] = ['id' => (string) Str::uuid(), 'color_en' => '', 'color_ar' => '', 'color_hex' => '#000000', 'image_path' => ''];
+        $this->dispatch('product-option-added');
+    }
+
+    public function removeColorOption(int $index): void
+    {
+        unset($this->colorOptions[$index]);
+        $this->colorOptions = array_values($this->colorOptions);
+    }
+
+    public function addSizeOption(): void
+    {
+        $this->sizeOptions[] = ['id' => (string) Str::uuid(), 'size_en' => '', 'size_ar' => ''];
+        $this->dispatch('product-option-added');
+    }
+
+    public function removeSizeOption(int $index): void
+    {
+        unset($this->sizeOptions[$index]);
+        $this->sizeOptions = array_values($this->sizeOptions);
+    }
+
     public function render(): View
     {
         return view('livewire.admin.products', [
@@ -226,7 +299,7 @@ class Products extends Component
 
     private function resetForm(): void
     {
-        $this->reset(['productId', 'categoryId', 'name', 'nameAr', 'sku', 'description', 'descriptionAr', 'price', 'compareAtPrice', 'stock', 'isActive', 'isFeatured', 'isBestseller', 'existingImages', 'newImages']);
+        $this->reset(['productId', 'categoryId', 'name', 'nameAr', 'sku', 'description', 'descriptionAr', 'price', 'compareAtPrice', 'stock', 'isActive', 'isFeatured', 'isBestseller', 'existingImages', 'newImages', 'colorOptions', 'sizeOptions']);
         $this->categoryId = (int) Category::query()->where('is_active', true)->whereNull('archived_at')->orderBy('sort_order')->value('id');
         $this->isActive = true;
         $this->isFeatured = false;

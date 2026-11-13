@@ -18,6 +18,10 @@ pest()->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in('Feature');
 
+afterEach(function (): void {
+    app()->setLocale((string) config('app.locale', 'en'));
+});
+
 /*
 |--------------------------------------------------------------------------
 | Expectations

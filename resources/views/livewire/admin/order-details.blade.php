@@ -46,7 +46,7 @@
                 <tbody>
                     @foreach ($order->items as $item)
                         <tr>
-                            <td data-label="{{ __('Product') }}">{{ $item->product_name }}</td>
+                            <td data-label="{{ __('Product') }}">{{ $item->product_name }}@if($item->variant_snapshot)<span class="note">@if($item->variant_snapshot['color_en'] ?? false){{ __('Color') }}: {{ app()->isLocale('ar') ? ($item->variant_snapshot['color_ar'] ?: $item->variant_snapshot['color_en']) : $item->variant_snapshot['color_en'] }} @endif @if($item->variant_snapshot['size_en'] ?? false){{ __('Size') }}: {{ app()->isLocale('ar') ? ($item->variant_snapshot['size_ar'] ?: $item->variant_snapshot['size_en']) : $item->variant_snapshot['size_en'] }}@endif</span>@endif</td>
                             <td data-label="{{ __('SKU') }}">{{ $item->sku ?: '—' }}</td>
                             <td data-label="{{ __('Unit price') }}">{{ number_format((float) $item->unit_price, 2) }} {{ \App\Models\StoreSetting::current()->currency_symbol }}</td>
                             <td data-label="{{ __('Quantity') }}">{{ $item->quantity }}</td>

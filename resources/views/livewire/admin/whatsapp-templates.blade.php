@@ -23,8 +23,6 @@
                 </div>
                 <div class="whatsapp-template-feedback" role="status" aria-live="polite">
                     <span wire:loading wire:target="templates.{{ $status }}">{{ __('Saving message…') }}</span>
-                    @if (($messageFeedback[$status] ?? '') === 'saved')<span wire:loading.remove wire:target="templates.{{ $status }}">{{ __('Message saved') }}</span>@endif
-                    @if (($messageFeedback[$status] ?? '') === 'deleted')<span>{{ __('Message deleted') }}</span>@endif
                 </div>
             </article>
         @endforeach

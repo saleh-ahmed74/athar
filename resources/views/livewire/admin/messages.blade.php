@@ -1,6 +1,6 @@
 <section>
     <div class="admin-heading"><h1>{{ __('Messages') }}</h1><span class="note">{{ __('Customer enquiries') }}</span></div>
-    @if (session('status'))<p class="status-message">{{ session('status') }}</p>@endif
+    @if (session('status'))<p class="status-message" x-data="{ visible: true }" x-init="setTimeout(() => visible = false, 2000)" x-show="visible"><span>{{ session('status') }}</span><button type="button" class="admin-toast-close" x-on:click="visible = false" aria-label="{{ __('Close') }}">×</button></p>@endif
     <div class="admin-table-wrap messages-table-wrap"><table class="admin-table messages-table"><thead><tr><th>{{ __('Name') }}</th><th>{{ __('Contact') }}</th><th>{{ __('Subject') }}</th><th>{{ __('Received') }}</th><th>{{ __('Status') }}</th><th></th></tr></thead><tbody>
     @forelse ($messages as $message)
         @php($whatsappPhone = preg_replace('/\D+/', '', $message->phone ?? '') ?? '')

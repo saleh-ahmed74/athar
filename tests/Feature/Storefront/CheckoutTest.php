@@ -439,6 +439,7 @@ test('WhatsApp button is always available but only pending orders open with a pr
 });
 
 test('admin can save and remove a custom Egyptian WhatsApp template for an order status', function () {
+    app()->setLocale('ar');
     $admin = User::factory()->create();
     $admin->forceFill(['role' => 'admin'])->save();
     StoreSetting::factory()->create();
@@ -765,6 +766,37 @@ test('product gallery arrows move through every image in both directions', funct
         ->assertSet('activeImageIndex', 1)
         ->call('previousImage')
         ->assertSet('activeImageIndex', 0);
+});
+
+test('product option steppers update locally and reject selections above ten when added to cart', function () {
+    Cache::flush();
+    StoreSetting::factory()->create(['track_stock' => false]);
+    $colorId = (string) Str::uuid();
+    $smallSizeId = (string) Str::uuid();
+    $largeSizeId = (string) Str::uuid();
+    $product = Product::factory()->create([
+        'colors' => [['id' => $colorId, 'color_en' => 'Red', 'color_ar' => 'أحمر', 'color_hex' => '#ff0000']],
+        'sizes' => [
+            ['id' => $smallSizeId, 'size_en' => 'Small', 'size_ar' => 'صغير'],
+            ['id' => $largeSizeId, 'size_en' => 'Large', 'size_ar' => 'كبير'],
+        ],
+    ]);
+    $smallCombination = $colorId.'__'.$smallSizeId;
+    $largeCombination = $colorId.'__'.$largeSizeId;
+
+    $component = Livewire::test(ProductPage::class, ['product' => $product])
+        ->assertSet('variantQuantities.'.$smallCombination, 0)
+        ->assertSet('variantQuantities.'.$largeCombination, 0);
+
+    expect($component->html())
+        ->toContain('$wire.entangle(')
+        ->toContain('x-on:click.stop')
+        ->toContain('x-bind:disabled="selectedOptionTotal === 0"')
+        ->not->toContain('wire:click="incrementVariantQuantity');
+
+    $component->set('variantQuantities', [$smallCombination => 6, $largeCombination => 5])
+        ->call('addToCart')
+        ->assertHasErrors('variantQuantities');
 });
 
 test('every admin screen renders for an administrator', function () {

@@ -1,6 +1,6 @@
 <section>
     <div class="admin-heading"><div><h1>{{ __('Store settings') }}</h1><p class="note">{{ __('All customer-facing store content is managed here and saved to the database.') }}</p></div></div>
-    @if (session('status'))<p class="status-message">{{ session('status') }}</p>@endif
+    @if (session('status'))<p class="status-message" x-data="{ visible: true }" x-init="setTimeout(() => visible = false, 2000)" x-show="visible"><span>{{ session('status') }}</span><button type="button" class="admin-toast-close" x-on:click="visible = false" aria-label="{{ __('Close') }}">×</button></p>@endif
     <form class="admin-card admin-form" wire:submit="save">
         @php
         $groups = [

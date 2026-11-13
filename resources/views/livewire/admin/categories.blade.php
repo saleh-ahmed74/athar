@@ -1,6 +1,6 @@
 <section x-data x-on:category-form-opened.window="setTimeout(() => document.getElementById('category-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)">
     <div class="admin-heading"><h1>{{ $showArchived ? __('Archived categories') : __('Categories') }}</h1><div class="table-actions"><button class="button secondary small" wire:click="toggleArchiveView">{{ $showArchived ? __('Active categories') : __('Archive') }}</button>@unless($showArchived)<button class="button small" wire:click="createCategory">{{ __('Add category') }}</button>@endunless</div></div>
-    @if (session('status'))<p class="status-message">{{ session('status') }}</p>@endif
+    @if (session('status'))<p class="status-message" x-data="{ visible: true }" x-init="setTimeout(() => visible = false, 2000)" x-show="visible"><span>{{ session('status') }}</span><button type="button" class="admin-toast-close" x-on:click="visible = false" aria-label="{{ __('Close') }}">×</button></p>@endif
     @if (session('error'))<p class="alert">{{ session('error') }}</p>@endif
     @if ($showForm)
         <form id="category-editor" class="admin-card admin-form" wire:submit="saveCategory"><h2>{{ $categoryId ? __('Edit category') : __('Add category') }}</h2>

@@ -6,7 +6,7 @@
             @foreach ($statusOptions as $status)<option value="{{ $status }}">{{ __(ucfirst($status)) }}</option>@endforeach
         </select>
     </div>
-    @if (session('status'))<p class="status-message">{{ session('status') }}</p>@endif
+    @if (session('status'))<p class="status-message" x-data="{ visible: true }" x-init="setTimeout(() => visible = false, 2000)" x-show="visible"><span>{{ session('status') }}</span><button type="button" class="admin-toast-close" x-on:click="visible = false" aria-label="{{ __('Close') }}">×</button></p>@endif
     @error('status')<p class="alert">{{ $message }}</p>@enderror
     <div class="admin-table-wrap"><table class="admin-table">
         <thead><tr><th>{{ __('Order number') }}</th><th>{{ __('Customer') }}</th><th>{{ __('Phone') }}</th><th>{{ __('Date') }}</th><th>{{ __('Items') }}</th><th>{{ __('Total') }}</th><th>{{ __('Status') }}</th></tr></thead>

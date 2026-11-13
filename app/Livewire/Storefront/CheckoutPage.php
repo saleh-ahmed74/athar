@@ -124,20 +124,36 @@ class CheckoutPage extends Component
         $shippingFeeCents = (int) round((float) $shippingFee * 100);
         try {
             $order = DB::transaction(function () use ($validated, $deliveryCity, $cart, $shippingFeeCents, $trackStock): Order {
-                $products = Product::query()->with('category')->whereNull('archived_at')->whereHas('category', fn ($query) => $query->whereNull('archived_at'))->whereIn('id', array_map('intval', array_keys($cart)))->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+                $productIds = array_values(array_unique(array_map(fn ($key): int => $this->parseCartKey((string) $key)[0], array_keys($cart))));
+                $products = Product::query()->with('category')->whereNull('archived_at')->whereHas('category', fn ($query) => $query->whereNull('archived_at'))->whereIn('id', $productIds)->orderBy('id')->lockForUpdate()->get()->keyBy('id');
                 $subtotalCents = 0;
                 $orderLines = [];
 
-                foreach ($cart as $productId => $quantity) {
-                    $product = $products->get((int) $productId);
+                foreach ($cart as $cartKey => $quantity) {
+                    [$productId, $colorId, $sizeId] = $this->parseCartKey((string) $cartKey);
+                    $product = $products->get($productId);
                     $quantity = (int) $quantity;
-                    if (! $product || ! $product->is_active || ! $product->category?->is_active || $product->archived_at || $product->category?->archived_at || $quantity < 1 || $quantity > 99 || ($trackStock && $quantity > $product->stock)) {
+                    if (! $product || ! $product->is_active || ! $product->category?->is_active || $product->archived_at || $product->category?->archived_at || $quantity < 1 || $quantity > 10 || ($trackStock && $quantity > $product->stock)) {
                         throw ValidationException::withMessages(['checkout' => __('One or more items are no longer available. Please update your cart.')]);
+                    }
+                    $variant = $product->hasOptions() ? $product->optionCombination($colorId, $sizeId) : null;
+                    if (($product->hasOptions() && ! $variant) || (! $product->hasOptions() && ($colorId !== null || $sizeId !== null))) {
+                        throw ValidationException::withMessages(['checkout' => __('One or more item options are no longer available. Please update your cart.')]);
                     }
                     $unitCents = (int) round((float) $product->price * 100);
                     $lineCents = $unitCents * $quantity;
                     $subtotalCents += $lineCents;
-                    $orderLines[] = [$product, $quantity, $unitCents, $lineCents];
+                    $snapshot = $variant ? [
+                        'color_id' => $variant['color_id'],
+                        'size_id' => $variant['size_id'],
+                        'color_en' => $variant['color_en'] ?? null,
+                        'color_ar' => $variant['color_ar'] ?? null,
+                        'color_hex' => $variant['color_hex'] ?? null,
+                        'size_en' => $variant['size_en'] ?? null,
+                        'size_ar' => $variant['size_ar'] ?? null,
+                        'unit_price' => number_format($unitCents / 100, 2, '.', ''),
+                    ] : null;
+                    $orderLines[] = [$product, $quantity, $unitCents, $lineCents, $snapshot];
                 }
 
                 $order = Order::query()->create([
@@ -159,7 +175,7 @@ class CheckoutPage extends Component
                     'inventory_tracked' => $trackStock,
                 ]);
 
-                foreach ($orderLines as [$product, $quantity, $unitCents, $lineCents]) {
+                foreach ($orderLines as [$product, $quantity, $unitCents, $lineCents, $snapshot]) {
                     $order->items()->create([
                         'product_id' => $product->id,
                         'product_name' => $product->name,
@@ -167,6 +183,7 @@ class CheckoutPage extends Component
                         'unit_price' => number_format($unitCents / 100, 2, '.', ''),
                         'quantity' => $quantity,
                         'line_total' => number_format($lineCents / 100, 2, '.', ''),
+                        'variant_snapshot' => $snapshot,
                     ]);
                     if ($trackStock) {
                         $product->decrement('stock', $quantity);
@@ -200,16 +217,23 @@ class CheckoutPage extends Component
         $zones = $this->checkoutShippingZones($settings);
         $selectedZone = collect($zones)->firstWhere('id', $this->city);
         $shippingFee = $selectedZone['fee'] ?? $settings->shipping_fee;
-        $products = Product::query()->with('category')->whereNull('archived_at')->whereHas('category', fn ($query) => $query->whereNull('archived_at'))->whereIn('id', array_map('intval', array_keys($cart)))->get()->keyBy('id');
+        $productIds = array_values(array_unique(array_map(fn ($key): int => $this->parseCartKey((string) $key)[0], array_keys($cart))));
+        $products = Product::query()->with('category')->whereNull('archived_at')->whereHas('category', fn ($query) => $query->whereNull('archived_at'))->whereIn('id', $productIds)->get()->keyBy('id');
         $lines = [];
         $subtotalCents = 0;
         foreach ($cart as $id => $quantity) {
-            $product = $products->get((int) $id);
+            [$productId, $colorId, $sizeId] = $this->parseCartKey((string) $id);
+            $product = $products->get($productId);
             if ($product) {
-                $maximum = $settings->track_stock ? max(1, $product->stock) : 99;
+                $variant = $product->hasOptions() ? $product->optionCombination($colorId, $sizeId) : null;
+                if (($product->hasOptions() && ! $variant) || (! $product->hasOptions() && ($colorId !== null || $sizeId !== null))) {
+                    continue;
+                }
+                $maximum = min(10, $settings->track_stock ? max(1, $product->stock) : 99);
                 $quantity = max(1, min((int) $quantity, $maximum));
-                $subtotalCents += (int) round((float) $product->price * 100) * $quantity;
-                $lines[] = ['product' => $product, 'quantity' => $quantity];
+                $unitPrice = (float) $product->price;
+                $subtotalCents += (int) round($unitPrice * 100) * $quantity;
+                $lines[] = ['product' => $product, 'quantity' => $quantity, 'variant' => $variant, 'unit_price' => $unitPrice];
             }
         }
 
@@ -262,5 +286,19 @@ class CheckoutPage extends Component
         }
 
         return $zones;
+    }
+
+    /** @return array{int, ?string, ?string} */
+    private function parseCartKey(string $key): array
+    {
+        if (preg_match('/^(\d+)(?::([0-9a-f-]{36}|-):([0-9a-f-]{36}|-))?$/i', $key, $matches) === 1) {
+            return [(int) $matches[1], ($matches[2] ?? '-') !== '-' ? $matches[2] : null, ($matches[3] ?? '-') !== '-' ? $matches[3] : null];
+        }
+
+        if (preg_match('/^(\d+)$/', $key, $matches) === 1) {
+            return [(int) $matches[1], null, null];
+        }
+
+        return [0, null, null];
     }
 }
